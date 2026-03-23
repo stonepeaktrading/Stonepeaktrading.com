@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Checkout | LinkedIn Authority</title>
+    <title>StonePeak Trading | Checkout</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -20,7 +20,13 @@
             box-shadow: 0 8px 20px rgba(0,0,0,0.05);
         }
         h2 { font-size: 1.6rem; margin-bottom: 0.5rem; }
-        .plan-desc { background: #f0f4f9; padding: 1rem; border-radius: 1rem; margin: 1rem 0; text-align: center; }
+        .plan-desc {
+            background: #f0f4f9;
+            padding: 1rem;
+            border-radius: 1rem;
+            margin: 1rem 0;
+            text-align: center;
+        }
         .plan-desc strong { font-size: 1.4rem; color: #0a66c2; }
         label { font-weight: 500; display: block; margin: 1rem 0 0.25rem; }
         input {
@@ -45,12 +51,13 @@
         button:active { background: #004182; }
         .error { color: #e53e3e; font-size: 0.85rem; margin-top: 0.5rem; text-align: center; }
         .note { font-size: 0.8rem; color: #718096; text-align: center; margin-top: 1rem; }
+        .footer { text-align: center; margin-top: 1rem; font-size: 0.7rem; color: #718096; }
     </style>
-    <!-- Lenco Payment Script (production) -->
     <script src="https://pay.lenco.co/js/v1/inline.js"></script>
 </head>
 <body>
     <div class="container">
+        <div style="text-align: center; font-weight: 600; margin-bottom: 1rem;">StonePeak Trading</div>
         <h2>Complete your subscription</h2>
         <div class="plan-desc">
             <strong>$799 / month</strong><br>
@@ -60,10 +67,11 @@
         <label for="email">Your email</label>
         <input type="email" id="email" placeholder="you@example.com" required>
 
-        <button id="payButton">Pay with Lenco</button>
+        <button id="payButton">Pay</button>
         <div id="errorMessage" class="error"></div>
         <div class="note">After payment, you’ll receive a link to our onboarding questionnaire within 24 hours.</div>
     </div>
+    <div class="footer">© 2025 StonePeak Trading</div>
 
     <script>
         const payButton = document.getElementById('payButton');
@@ -78,12 +86,11 @@
             }
             errorDiv.textContent = '';
 
-            // Initialize Lenco payment
             LencoPay.getPaid({
                 key: 'pub-0d376f11e19bd726b3ec4f73a3ef0d7e2f6d33d8ddb9b2b6',
                 email: email,
                 amount: 799.00,
-                currency: 'USD',            // ✅ USD
+                currency: 'USD',
                 reference: 'LINK_' + Date.now(),
                 channels: ['card', 'mobile-money'],
                 onSuccess: function(response) {
