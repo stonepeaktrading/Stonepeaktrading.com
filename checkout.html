@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Checkout | LinkedIn Authority</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, sans-serif;
+            background: #f5f7fa;
+            padding: 1.5rem;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 2rem;
+            padding: 2rem 1.5rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+        }
+        h2 { font-size: 1.6rem; margin-bottom: 0.5rem; }
+        .plan-desc { background: #f0f4f9; padding: 1rem; border-radius: 1rem; margin: 1rem 0; text-align: center; }
+        .plan-desc strong { font-size: 1.4rem; color: #0a66c2; }
+        label { font-weight: 500; display: block; margin: 1rem 0 0.25rem; }
+        input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ccc;
+            border-radius: 0.75rem;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+        button {
+            width: 100%;
+            background: #0a66c2;
+            color: white;
+            font-weight: 600;
+            padding: 0.9rem;
+            border: none;
+            border-radius: 2rem;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        button:active { background: #004182; }
+        .error { color: #e53e3e; font-size: 0.85rem; margin-top: 0.5rem; text-align: center; }
+        .note { font-size: 0.8rem; color: #718096; text-align: center; margin-top: 1rem; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Complete your subscription</h2>
+        <div class="plan-desc">
+            <strong>$799 / month</strong><br>
+            Recurring manually — we’ll send a payment link each month.
+        </div>
+
+        <label for="email">Your email</label>
+        <input type="email" id="email" placeholder="you@example.com" required>
+
+        <button id="payButton">Pay with Lenco</button>
+        <div id="errorMessage" class="error"></div>
+        <div class="note">After payment, you’ll receive a link to our onboarding questionnaire within 24 hours.</div>
+    </div>
+
+    <!-- REPLACE THIS SCRIPT URL WITH LENCO'S ACTUAL WIDGET URL -->
+    <script src="https://checkout.lenco.co/.../widget.js"></script>
+    <script>
+        const payButton = document.getElementById('payButton');
+        const emailInput = document.getElementById('email');
+        const errorDiv = document.getElementById('errorMessage');
+
+        payButton.addEventListener('click', function() {
+            const email = emailInput.value.trim();
+            if (!email) {
+                errorDiv.textContent = 'Please enter your email.';
+                return;
+            }
+            errorDiv.textContent = '';
+
+            // REPLACE YOUR_LENCO_PUBLIC_KEY with your actual key
+            const lenco = new LencoWidget({
+                publicKey: 'YOUR_LENCO_PUBLIC_KEY',
+                amount: 79900,        // adjust currency unit (e.g., 79900 = 799.00)
+                currency: 'NGN',      // change if needed
+                email: email,
+                reference: 'LINK_' + Date.now(),
+                callback: function(response) {
+                    window.location.href = 'success.html?email=' + encodeURIComponent(email);
+                },
+                onClose: function() {
+                    console.log('Widget closed');
+                }
+            });
+            lenco.open();
+        });
+    </script>
+</body>
+</html>
