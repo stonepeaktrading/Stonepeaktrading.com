@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Payment Successful – Stone Peak Trading</title>
+  <title>Welcome – Stone Peak Trading</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
@@ -11,14 +11,14 @@
   </style>
 </head>
 <body class="bg-zinc-50 text-zinc-900">
-
   <div class="max-w-3xl mx-auto px-6 py-20">
     <div class="bg-white rounded-3xl shadow-xl p-12 text-center">
       <div class="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6">
         <i class="fas fa-check text-emerald-600 text-4xl"></i>
       </div>
+
       <h1 class="text-4xl font-bold mb-4">Payment successful! 🎉</h1>
-      <p class="text-xl text-zinc-600 mb-8">
+      <p class="text-xl text-zinc-600 mb-8" id="planMessage">
         Thanks for choosing Stone Peak Trading. I'm excited to help you build your LinkedIn presence.
       </p>
 
@@ -41,35 +41,46 @@
       </div>
 
       <div class="space-y-4">
-        <!-- Replace YOUR_GOOGLE_FORM_URL with your actual Google Form link -->
-        <a href="YOUR_GOOGLE_FORM_URL" 
-           target="_blank"
+        <!-- Google Form link (your actual form) -->
+        <a href="https://forms.gle/ebaEx3D27iDDPsa1A" target="_blank"
            class="inline-block w-full bg-emerald-700 text-white font-semibold py-4 rounded-xl hover:bg-emerald-800 transition">
           <i class="fas fa-file-alt mr-2"></i> Complete Onboarding Form
         </a>
-        <!-- Replace YOUR_POSTBRIDGE_OAUTH_URL with your actual PostBridge OAuth link -->
-        <a href="YOUR_POSTBRIDGE_OAUTH_URL" 
-           target="_blank"
+        <!-- PostBridge OAuth link – replace with your actual link -->
+        <a href="YOUR_POSTBRIDGE_OAUTH_URL" target="_blank"
            class="inline-block w-full bg-zinc-800 text-white font-semibold py-4 rounded-xl hover:bg-zinc-900 transition">
           <i class="fab fa-linkedin mr-2"></i> Authorize LinkedIn Access (One Time)
         </a>
       </div>
 
       <p class="text-sm text-zinc-500 mt-8">
-        If you have any questions, reply to this email or WhatsApp me at +260 XXX XXX XXX.
+        If you have any questions, WhatsApp me at <strong>+260 973 789 333</strong> or email <strong>phil@stonepeaktrading.com</strong>. — Phil
       </p>
     </div>
   </div>
 
   <script>
-    // Optional: parse the URL parameters (reference, plan, email) for tracking
+    // Parse URL parameters to display the selected plan
     const urlParams = new URLSearchParams(window.location.search);
-    const reference = urlParams.get('reference');
     const plan = urlParams.get('plan');
     const email = urlParams.get('email');
-    console.log('Payment reference:', reference, 'Plan:', plan, 'Email:', email);
-    // You could send this info to your analytics or store it
-  </script>
 
+    if (plan) {
+      let planDisplay = '';
+      if (plan === 'core') planDisplay = 'Core Plan';
+      else if (plan === 'growth') planDisplay = 'Growth Plan';
+      else if (plan === 'premium') planDisplay = 'Premium Plan';
+      
+      if (planDisplay) {
+        const msgElement = document.getElementById('planMessage');
+        msgElement.innerHTML = `You're now signed up for the <strong>${planDisplay}</strong>. I'll get your LinkedIn presence working for you.`;
+      }
+    }
+
+    // Optional: log email for manual matching
+    if (email) {
+      console.log('Client email (from payment):', email);
+    }
+  </script>
 </body>
 </html>
