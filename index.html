@@ -1,304 +1,220 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Stone Peak Trading | LinkedIn Authority</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, sans-serif;
-            background: #f5f7fa;
-            color: #1a2c3e;
-            line-height: 1.5;
-        }
-        .container {
-            max-width: 720px;
-            margin: 0 auto;
-            padding: 1.5rem;
-        }
-        section {
-            background: white;
-            border-radius: 2rem;
-            padding: 2rem 1.5rem;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
-        }
-        h1 {
-            font-size: 2rem;
-            font-weight: 800;
-            line-height: 1.2;
-            margin-bottom: 0.5rem;
-        }
-        h2 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-        }
-        .subhead {
-            font-size: 1.2rem;
-            color: #4a5568;
-            margin-bottom: 1rem;
-        }
-        .btn-primary {
-            display: inline-block;
-            background: #0a66c2;
-            color: white;
-            font-weight: 600;
-            text-decoration: none;
-            padding: 0.9rem 1.8rem;
-            border-radius: 40px;
-            font-size: 1rem;
-            transition: background 0.2s;
-            border: none;
-            cursor: pointer;
-        }
-        .btn-primary:active { background: #004182; }
-        .btn-outline {
-            display: inline-block;
-            background: transparent;
-            color: #0a66c2;
-            font-weight: 600;
-            text-decoration: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 40px;
-            border: 1px solid #0a66c2;
-            transition: all 0.2s;
-        }
-        .btn-outline:active { background: #eef3fc; }
-        .features {
-            list-style: none;
-            margin: 1.5rem 0;
-        }
-        .features li {
-            margin: 0.8rem 0;
-            display: flex;
-            gap: 0.75rem;
-            align-items: flex-start;
-        }
-        .features li::before {
-            content: "✓";
-            color: #0a66c2;
-            font-weight: bold;
-            font-size: 1.1rem;
-        }
-        .step-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin: 1.5rem 0;
-        }
-        .step {
-            flex: 1;
-            background: #f8fafc;
-            padding: 1rem;
-            border-radius: 1rem;
-            text-align: center;
-        }
-        .step-number {
-            background: #0a66c2;
-            color: white;
-            width: 32px;
-            height: 32px;
-            border-radius: 32px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-        }
-        .testimonial {
-            background: #f8fafc;
-            border-left: 4px solid #0a66c2;
-            padding: 1rem;
-            border-radius: 1rem;
-            margin: 1rem 0;
-            font-style: italic;
-        }
-        .pricing {
-            text-align: center;
-        }
-        .price {
-            font-size: 2.8rem;
-            font-weight: 800;
-            color: #0a66c2;
-            margin: 0.5rem 0;
-        }
-        .faq-item {
-            margin: 1rem 0;
-        }
-        .faq-question {
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-        }
-        .footer {
-            text-align: center;
-            font-size: 0.75rem;
-            color: #718096;
-            margin-top: 1rem;
-        }
-        .footer a {
-            color: #0a66c2;
-            text-decoration: none;
-        }
-        .badge {
-            background: #eef3fc;
-            padding: 0.25rem 0.75rem;
-            border-radius: 2rem;
-            font-size: 0.8rem;
-            display: inline-block;
-            margin-bottom: 1rem;
-        }
-        @media (max-width: 600px) {
-            .step-grid {
-                flex-direction: column;
-            }
-            section {
-                padding: 1.5rem;
-            }
-            h1 {
-                font-size: 1.6rem;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <!-- Header -->
-        <div style="text-align: center; margin-bottom: 1rem; font-weight: 600; font-size: 1.2rem;">
-            Stone Peak Trading
+// app/page.tsx
+'use client';
+
+import { useState } from 'react';
+
+export default function Home() {
+  const [loading, setLoading] = useState<string | null>(null);
+
+  const handlePayment = (tier: string, amount: number, planName: string) => {
+    setLoading(tier);
+
+    // Your real Lenco Public Key
+    const publicKey = 'pub-b279cea59e68bf274a5a3d60cf5c8ab090cc7cdc0a270a20';
+
+    // @ts-ignore - LencoPay is injected via script
+    if (typeof window.LencoPay === 'undefined') {
+      alert('Payment widget is still loading. Please refresh the page and try again.');
+      setLoading(null);
+      return;
+    }
+
+    window.LencoPay.getPaid({
+      key: publicKey,
+      reference: `sp-\( {tier}- \){Date.now()}`,
+      email: '',                    // Customer will enter during payment
+      amount: amount,
+      currency: 'USD',              // Change to 'ZMW' if you prefer Zambian Kwacha
+      channels: ['card', 'mobile-money'],
+      customer: {
+        firstName: '',
+        lastName: '',
+        phone: '',
+      },
+      metadata: {
+        plan: tier,
+        planName: planName,
+      },
+      onSuccess: function (response: any) {
+        console.log('Payment successful:', response);
+        alert(`Payment successful! Reference: ${response.reference}`);
+        
+        // Redirect to success page (we'll create this next)
+        window.location.href = `/success?reference=\( {response.reference}&plan= \){tier}&amount=${amount}`;
+      },
+      onClose: function () {
+        alert('Payment window closed.');
+        setLoading(null);
+      },
+      onConfirmationPending: function () {
+        alert('Payment is pending confirmation. We will notify you shortly.');
+      },
+    });
+
+    setLoading(null);
+  };
+
+  return (
+    <div className="min-h-screen bg-white font-sans">
+      {/* Hero */}
+      <div className="max-w-5xl mx-auto px-6 pt-24 pb-20 text-center">
+        <h1 className="text-6xl md:text-7xl font-bold tracking-tighter text-gray-900">
+          Stone Peak&apos;s Commodity Trader LinkedIn
+        </h1>
+        <p className="mt-8 text-2xl text-gray-600 max-w-3xl mx-auto">
+          Done-for-you LinkedIn content for physical agricultural commodity traders.<br />
+          Written by a fellow physical trader. One batch review per month.
+        </p>
+        <div className="mt-12">
+          <a href="#pricing" className="inline-block bg-emerald-700 hover:bg-emerald-800 text-white text-xl font-semibold px-12 py-5 rounded-2xl transition">
+            Choose Your Plan
+          </a>
         </div>
+        <p className="mt-6 text-sm text-gray-500">Built exclusively for active physical traders worldwide • Grains • Oilseeds • Softs • Fertilizer</p>
+      </div>
 
-        <!-- Hero -->
-        <section>
-            <span class="badge">Trusted by busy consultants & founders</span>
-            <h1>Your LinkedIn presence is costing you clients.</h1>
-            <div class="subhead">We become your personal LinkedIn content team—writing 30 posts per month that you approve in one batch. No daily work. No guesswork.</div>
-            <div style="margin: 1.5rem 0;">
-                <a href="checkout.html" class="btn-primary">Get Started →</a>
-                <a href="#faq" class="btn-outline" style="margin-left: 0.5rem;">Learn More</a>
-            </div>
-        </section>
-
-        <!-- Problem -->
-        <section>
-            <h2>The cost of inconsistency</h2>
-            <p>You know LinkedIn is where your next client, speaking gig, or career move comes from. But posting consistently takes time you don’t have. Your profile sits silent while competitors build authority. And when you do post, you’re never sure if it’s the right message.</p>
-            <div style="margin-top: 1rem; background: #fef2e8; padding: 1rem; border-radius: 1rem;">
-                <strong>Result:</strong> Invisible to the people who matter. Leaving opportunities on the table.
-            </div>
-        </section>
-
-        <!-- Solution -->
-        <section>
-            <h2>Your done‑for‑you LinkedIn content team</h2>
-            <p>We handle everything. You fill out one short questionnaire about your expertise, wins, and audience. We turn your answers into 30 LinkedIn posts per month — scheduled for you. You review them in <strong>one batch</strong> at the start of the month. Approve, edit, or replace; we make all changes before posting.</p>
-        </section>
-
-        <!-- How It Works -->
-        <section>
-            <h2>How it works</h2>
-            <div class="step-grid">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <strong>Questionnaire</strong>
-                    <p style="font-size: 0.9rem;">You share your expertise, wins, and target audience (15 minutes).</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <strong>We write 30 posts</strong>
-                    <p style="font-size: 0.9rem;">Personalised to your voice, industry, and goals.</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <strong>Batch approval</strong>
-                    <p style="font-size: 0.9rem;">You approve, edit, or replace in one sitting.</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">4</div>
-                    <strong>Post & report</strong>
-                    <p style="font-size: 0.9rem;">We schedule, post, and send you monthly performance.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Features -->
-        <section>
-            <h2>What you get</h2>
-            <ul class="features">
-                <li>30 LinkedIn posts per month (one per weekday)</li>
-                <li>Personalized to your voice and industry</li>
-                <li>Batch approval: review a month of posts in 15 minutes</li>
-                <li>Monthly performance snapshot (impressions, profile views, engagement)</li>
-                <li>Cancel anytime — no long‑term contract</li>
-            </ul>
-        </section>
-
-        <!-- Social Proof -->
-        <section>
-            <h2>What professionals are saying</h2>
-            <div class="testimonial">
-                “Finally, a LinkedIn presence that reflects my experience — without me spending hours on it. The batch approval process is a game changer.”<br>
-                — <strong>Alex R., Strategy Consultant</strong>
-            </div>
-            <div class="testimonial">
-                “I tried to post consistently myself but always fell off. Now I have a steady stream of content and I'm getting inbound opportunities.”<br>
-                — <strong>Jamie L., Executive Coach</strong>
-            </div>
-            <p style="font-size: 0.8rem; margin-top: 1rem;">*Testimonials from early clients. Your results may vary based on your network and engagement.</p>
-        </section>
-
-        <!-- Pricing (Single Plan) -->
-        <section class="pricing">
-            <h2>Simple, transparent pricing</h2>
-            <div class="price">$799 <span style="font-size: 1rem;">/ month</span></div>
-            <p>30 LinkedIn posts delivered, scheduled, and reported. Cancel anytime with 30 days’ notice.</p>
-            <a href="checkout.html" class="btn-primary" style="margin-top: 1rem;">Get Started →</a>
-        </section>
-
-        <!-- FAQ -->
-        <section id="faq">
-            <h2>Frequently asked questions</h2>
-            <div class="faq-item">
-                <div class="faq-question">What if I don’t like the posts?</div>
-                <div>You can mark any post for edit or replacement during batch review. We make all changes before anything goes live.</div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-question">How do I know it’s working?</div>
-                <div>Each month you’ll receive a report with impressions, profile views, and engagement. You’ll see your visibility grow.</div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-question">Can I cancel?</div>
-                <div>Yes. No long‑term contracts. Just let us know 30 days before your next billing date.</div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-question">Do I need to provide content ideas every month?</div>
-                <div>We’ll send a brief monthly email to capture new wins or insights. Most months you’ll just approve the posts.</div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-question">Is this only for consultants and founders?</div>
-                <div>We work with any busy professional who needs to build authority on LinkedIn without the daily grind.</div>
-            </div>
-        </section>
-
-        <!-- Final CTA -->
-        <section>
-            <div style="text-align: center;">
-                <h2>Ready to turn LinkedIn into a client‑attracting asset?</h2>
-                <p style="margin-bottom: 1rem;">Join consultants and founders who are building authority without the daily grind.</p>
-                <a href="checkout.html" class="btn-primary">Get Started →</a>
-            </div>
-        </section>
-
-        <!-- Footer -->
-        <div class="footer">
-            © 2025 Stone Peak Trading. All rights reserved.<br>
-            <a href="privacy.html">Privacy Policy</a> | <a href="terms.html">Terms of Service</a>
+      {/* Problem */}
+      <div className="bg-gray-50 py-20">
+        <div className="max-w-3xl mx-auto px-6 text-center">
+          <h2 className="text-4xl font-semibold">You trade physicals. Not posts.</h2>
+          <p className="mt-8 text-xl text-gray-600">
+            While you negotiate FOB/CFR deals, chase vessel nominations, manage basis risk and logistics, 
+            other traders are posting insights and building visibility on LinkedIn.
+          </p>
         </div>
+      </div>
+
+      {/* How It Works */}
+      <div className="py-24 bg-white">
+        <div className="max-w-4xl mx-auto px-6">
+          <h2 className="text-4xl font-semibold text-center mb-16">
+            From payment to posting — you only touch it once per month
+          </h2>
+
+          <div className="space-y-16">
+            {[
+              { num: "01", title: "Pay monthly", desc: "Choose Core ($1,999), Growth ($2,799) or Premium ($3,999)." },
+              { num: "02", title: "15-minute onboarding questionnaire", desc: "Share your commodities, origins, edge, target counterparties and tone." },
+              { num: "03", title: "I write your full month of posts", desc: "Authentic physical trader voice — no generic content." },
+              { num: "04", title: "One batch review", desc: "Review and edit everything in 15–25 minutes." },
+              { num: "05", title: "I schedule in PostBridge", desc: "I manually upload and schedule all approved posts." },
+              { num: "06", title: "Posts go live automatically", desc: "One per trading day — zero daily work from you." },
+              { num: "07", title: "Monthly cycle continues", desc: "Short new wins update → new batch → one review → schedule." },
+            ].map((step) => (
+              <div key={step.num} className="flex gap-8 items-start">
+                <div className="font-mono text-5xl font-bold text-emerald-700 shrink-0">{step.num}</div>
+                <div>
+                  <h3 className="text-2xl font-semibold">{step.title}</h3>
+                  <p className="mt-3 text-lg text-gray-600">{step.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Pricing */}
+      <div id="pricing" className="bg-gray-50 py-24">
+        <div className="max-w-5xl mx-auto px-6">
+          <h2 className="text-4xl font-semibold text-center mb-4">Simple, transparent pricing</h2>
+          <p className="text-center text-gray-600 mb-12">Cancel anytime with 30 days notice</p>
+
+          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            {/* Core */}
+            <div className="bg-white border border-gray-200 rounded-3xl p-10">
+              <h3 className="text-3xl font-semibold">Core</h3>
+              <div className="mt-6">
+                <span className="text-6xl font-bold">$1,999</span>
+                <span className="text-xl text-gray-500">/month</span>
+              </div>
+              <p className="mt-2 text-gray-600">20 posts per month</p>
+
+              <ul className="mt-10 space-y-4 text-gray-700">
+                <li>✓ 20 tailored posts</li>
+                <li>✓ One monthly batch review</li>
+                <li>✓ Scheduling in PostBridge</li>
+                <li>✓ Basic performance snapshot</li>
+              </ul>
+
+              <button
+                onClick={() => handlePayment('core', 1999, 'Core Plan')}
+                disabled={loading === 'core'}
+                className="mt-12 w-full bg-gray-900 hover:bg-black disabled:bg-gray-400 text-white py-4 rounded-2xl font-semibold transition"
+              >
+                {loading === 'core' ? 'Processing...' : 'Select Core'}
+              </button>
+            </div>
+
+            {/* Growth - Most Popular */}
+            <div className="bg-white border-2 border-emerald-700 rounded-3xl p-10 relative scale-[1.02]">
+              <div className="absolute -top-5 left-1/2 -translate-x-1/2 bg-emerald-700 text-white px-6 py-1 rounded-full text-sm font-medium">
+                MOST POPULAR
+              </div>
+              <h3 className="text-3xl font-semibold">Growth</h3>
+              <div className="mt-6">
+                <span className="text-6xl font-bold">$2,799</span>
+                <span className="text-xl text-gray-500">/month</span>
+              </div>
+              <p className="mt-2 text-gray-600">30 posts per month</p>
+
+              <ul className="mt-10 space-y-4 text-gray-700">
+                <li>✓ 30 tailored posts</li>
+                <li>✓ One monthly batch review</li>
+                <li>✓ Deeper performance report</li>
+                <li>✓ Short strategy voice note option</li>
+              </ul>
+
+              <button
+                onClick={() => handlePayment('growth', 2799, 'Growth Plan')}
+                disabled={loading === 'growth'}
+                className="mt-12 w-full bg-emerald-700 hover:bg-emerald-800 disabled:bg-emerald-600 text-white py-4 rounded-2xl font-semibold transition"
+              >
+                {loading === 'growth' ? 'Processing...' : 'Select Growth'}
+              </button>
+            </div>
+
+            {/* Premium */}
+            <div className="bg-white border border-gray-200 rounded-3xl p-10">
+              <h3 className="text-3xl font-semibold">Premium</h3>
+              <div className="mt-6">
+                <span className="text-6xl font-bold">$3,999</span>
+                <span className="text-xl text-gray-500">/month</span>
+              </div>
+              <p className="mt-2 text-gray-600">30+ posts per month</p>
+
+              <ul className="mt-10 space-y-4 text-gray-700">
+                <li>✓ 30+ tailored posts</li>
+                <li>✓ Profile optimization</li>
+                <li>✓ Priority revisions & support</li>
+              </ul>
+
+              <button
+                onClick={() => handlePayment('premium', 3999, 'Premium Plan')}
+                disabled={loading === 'premium'}
+                className="mt-12 w-full bg-gray-900 hover:bg-black disabled:bg-gray-400 text-white py-4 rounded-2xl font-semibold transition"
+              >
+                {loading === 'premium' ? 'Processing...' : 'Select Premium'}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div className="py-16 text-center border-t border-gray-200">
+        <p className="text-gray-600">
+          Built and managed by Phil — Active physical agricultural commodity trader at Stone Peak Trading
+        </p>
+        <p className="text-sm text-gray-500 mt-4">
+          © 2026 Stone Peak Trading. All rights reserved.
+        </p>
+      </div>
+
+      {/* Lenco Payment Widget Script */}
+      <script
+        src="https://pay.lenco.co/js/v1/inline.js"
+        async
+      />
     </div>
-</body>
-</html>
+  );
+}
