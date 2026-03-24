@@ -6,33 +6,16 @@
   <title>Stone Peak Trading – LinkedIn for Physical Commodity Traders</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <!-- Lenco Inline Script -->
   <script src="https://pay.lenco.co/js/v1/inline.js"></script>
   <style>
     body { font-family: 'Inter', system-ui, sans-serif; }
     .hero-bg { background: linear-gradient(135deg, #064e3b 0%, #10b981 100%); }
-    .debug-panel {
-      position: fixed;
-      bottom: 10px;
-      right: 10px;
-      background: #1e1e1e;
-      color: #0f0;
-      font-family: monospace;
-      font-size: 12px;
-      padding: 8px 12px;
-      border-radius: 8px;
-      z-index: 9999;
-      opacity: 0.7;
-      pointer-events: none;
+    .modal {
+      transition: opacity 0.25s ease;
     }
   </style>
 </head>
 <body class="bg-zinc-50 text-zinc-900">
-
-  <!-- Debug Panel (will auto-update) -->
-  <div id="debugPanel" class="debug-panel">
-    LencoPay: <span id="lencoStatus">Loading...</span>
-  </div>
 
   <!-- Navigation -->
   <nav class="bg-white border-b sticky top-0 z-50">
@@ -74,27 +57,9 @@
         <p class="mt-4 text-xl text-zinc-600 max-w-3xl mx-auto">Because generic LinkedIn content won't attract the right counterparties. You need market insights, execution stories, and the credibility that only comes from someone who's done it.</p>
       </div>
       <div class="grid md:grid-cols-3 gap-12">
-        <div class="text-center">
-          <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <i class="fas fa-chart-line text-emerald-700 text-2xl"></i>
-          </div>
-          <h3 class="text-xl font-semibold mb-2">Attract new counterparties</h3>
-          <p class="text-zinc-600">Buyers, sellers, and financiers discover you through authentic, expert content.</p>
-        </div>
-        <div class="text-center">
-          <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <i class="fas fa-handshake text-emerald-700 text-2xl"></i>
-          </div>
-          <h3 class="text-xl font-semibold mb-2">Build credibility with financiers</h3>
-          <p class="text-zinc-600">Show banks and investors you're a reliable, knowledgeable partner.</p>
-        </div>
-        <div class="text-center">
-          <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <i class="fas fa-clock text-emerald-700 text-2xl"></i>
-          </div>
-          <h3 class="text-xl font-semibold mb-2">Win deals while you sleep</h3>
-          <p class="text-zinc-600">Consistent visibility means opportunities find you, even when you're negotiating.</p>
-        </div>
+        <div class="text-center"><div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4"><i class="fas fa-chart-line text-emerald-700 text-2xl"></i></div><h3 class="text-xl font-semibold mb-2">Attract new counterparties</h3><p class="text-zinc-600">Buyers, sellers, and financiers discover you through authentic, expert content.</p></div>
+        <div class="text-center"><div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4"><i class="fas fa-handshake text-emerald-700 text-2xl"></i></div><h3 class="text-xl font-semibold mb-2">Build credibility with financiers</h3><p class="text-zinc-600">Show banks and investors you're a reliable, knowledgeable partner.</p></div>
+        <div class="text-center"><div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4"><i class="fas fa-clock text-emerald-700 text-2xl"></i></div><h3 class="text-xl font-semibold mb-2">Win deals while you sleep</h3><p class="text-zinc-600">Consistent visibility means opportunities find you, even when you're negotiating.</p></div>
       </div>
     </div>
   </div>
@@ -133,31 +98,22 @@
     <div class="max-w-6xl mx-auto px-6">
       <div class="text-center mb-16"><h2 class="text-4xl font-semibold">Choose Your Plan</h2><p class="mt-4 text-zinc-600">Cancel anytime with 30 days notice</p></div>
       <div class="grid md:grid-cols-3 gap-8">
-        <!-- Core -->
-        <div class="border border-zinc-200 rounded-3xl p-10 bg-white">
-          <h3 class="text-3xl font-semibold">Core</h3>
-          <div class="mt-6"><span class="text-6xl font-bold">$1,999</span><span class="text-xl text-zinc-500">/month</span></div>
-          <p class="mt-2 text-zinc-600">20 posts per month</p>
-          <ul class="mt-10 space-y-4 text-zinc-700"><li>✓ 20 tailored posts</li><li>✓ One batch review per month</li><li>✓ Secure scheduling</li><li>✓ Basic performance snapshot</li></ul>
-          <button onclick="startPayment('core', 1999, 'Core Plan')" class="mt-12 w-full py-4 bg-zinc-900 text-white rounded-2xl font-semibold hover:bg-black transition">Select Core</button>
-        </div>
-        <!-- Growth -->
-        <div class="border-2 border-emerald-700 rounded-3xl p-10 bg-white relative">
-          <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-emerald-700 text-white text-xs font-medium px-6 py-1.5 rounded-full">MOST POPULAR</div>
-          <h3 class="text-3xl font-semibold">Growth</h3>
-          <div class="mt-6"><span class="text-6xl font-bold">$2,799</span><span class="text-xl text-zinc-500">/month</span></div>
-          <p class="mt-2 text-zinc-600">30 posts per month</p>
-          <ul class="mt-10 space-y-4 text-zinc-700"><li>✓ 30 tailored posts</li><li>✓ One batch review per month</li><li>✓ Deeper performance report</li><li>✓ Strategy voice note option</li></ul>
-          <button onclick="startPayment('growth', 2799, 'Growth Plan')" class="mt-12 w-full py-4 bg-emerald-700 text-white rounded-2xl font-semibold hover:bg-emerald-800 transition">Select Growth</button>
-        </div>
-        <!-- Premium -->
-        <div class="border border-zinc-200 rounded-3xl p-10 bg-white">
-          <h3 class="text-3xl font-semibold">Premium</h3>
-          <div class="mt-6"><span class="text-6xl font-bold">$3,999</span><span class="text-xl text-zinc-500">/month</span></div>
-          <p class="mt-2 text-zinc-600">30+ posts per month</p>
-          <ul class="mt-10 space-y-4 text-zinc-700"><li>✓ 30+ tailored posts</li><li>✓ Profile optimization</li><li>✓ Priority revisions</li><li>✓ Monthly strategy support</li></ul>
-          <button onclick="startPayment('premium', 3999, 'Premium Plan')" class="mt-12 w-full py-4 bg-zinc-900 text-white rounded-2xl font-semibold hover:bg-black transition">Select Premium</button>
-        </div>
+        <div class="border border-zinc-200 rounded-3xl p-10 bg-white"><h3 class="text-3xl font-semibold">Core</h3><div class="mt-6"><span class="text-6xl font-bold">$1,999</span><span class="text-xl text-zinc-500">/month</span></div><p class="mt-2 text-zinc-600">20 posts per month</p><ul class="mt-10 space-y-4 text-zinc-700"><li>✓ 20 tailored posts</li><li>✓ One batch review per month</li><li>✓ Secure scheduling</li><li>✓ Basic performance snapshot</li></ul><button onclick="showEmailModal('core', 1999, 'Core Plan')" class="mt-12 w-full py-4 bg-zinc-900 text-white rounded-2xl font-semibold hover:bg-black transition">Select Core</button></div>
+        <div class="border-2 border-emerald-700 rounded-3xl p-10 bg-white relative"><div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-emerald-700 text-white text-xs font-medium px-6 py-1.5 rounded-full">MOST POPULAR</div><h3 class="text-3xl font-semibold">Growth</h3><div class="mt-6"><span class="text-6xl font-bold">$2,799</span><span class="text-xl text-zinc-500">/month</span></div><p class="mt-2 text-zinc-600">30 posts per month</p><ul class="mt-10 space-y-4 text-zinc-700"><li>✓ 30 tailored posts</li><li>✓ One batch review per month</li><li>✓ Deeper performance report</li><li>✓ Strategy voice note option</li></ul><button onclick="showEmailModal('growth', 2799, 'Growth Plan')" class="mt-12 w-full py-4 bg-emerald-700 text-white rounded-2xl font-semibold hover:bg-emerald-800 transition">Select Growth</button></div>
+        <div class="border border-zinc-200 rounded-3xl p-10 bg-white"><h3 class="text-3xl font-semibold">Premium</h3><div class="mt-6"><span class="text-6xl font-bold">$3,999</span><span class="text-xl text-zinc-500">/month</span></div><p class="mt-2 text-zinc-600">30+ posts per month</p><ul class="mt-10 space-y-4 text-zinc-700"><li>✓ 30+ tailored posts</li><li>✓ Profile optimization</li><li>✓ Priority revisions</li><li>✓ Monthly strategy support</li></ul><button onclick="showEmailModal('premium', 3999, 'Premium Plan')" class="mt-12 w-full py-4 bg-zinc-900 text-white rounded-2xl font-semibold hover:bg-black transition">Select Premium</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Email Modal (hidden by default) -->
+  <div id="emailModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden transition-opacity">
+    <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4 shadow-xl">
+      <h3 class="text-2xl font-bold mb-2">Almost there</h3>
+      <p class="text-zinc-600 mb-6">Please enter your email to continue with payment.</p>
+      <input type="email" id="customerEmail" placeholder="you@example.com" class="w-full border border-zinc-300 rounded-xl px-4 py-3 mb-6 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+      <div class="flex gap-3">
+        <button id="confirmPaymentBtn" class="flex-1 bg-emerald-700 text-white font-semibold py-3 rounded-xl hover:bg-emerald-800 transition">Proceed to Pay</button>
+        <button onclick="closeEmailModal()" class="flex-1 border border-zinc-300 text-zinc-700 font-semibold py-3 rounded-xl hover:bg-zinc-50 transition">Cancel</button>
       </div>
     </div>
   </div>
@@ -184,46 +140,74 @@
   </footer>
 
   <script>
-    // Your Lenco public key
     const LENCO_PUBLIC_KEY = 'pub-0d376f11e19bd726b3ec4f73a3ef0d7e2f6d33d8ddb9b2b6';
+    let pendingPayment = { tier: null, amount: null, planName: null };
 
-    function updateStatus() {
-      const statusSpan = document.getElementById('lencoStatus');
-      if (typeof LencoPay !== 'undefined') {
-        statusSpan.innerText = 'Ready';
-        statusSpan.style.color = '#0f0';
-      } else {
-        statusSpan.innerText = 'Not loaded';
-        statusSpan.style.color = '#f00';
-      }
+    // Show email modal and store selected plan details
+    function showEmailModal(tier, amount, planName) {
+      pendingPayment = { tier, amount, planName };
+      const modal = document.getElementById('emailModal');
+      modal.classList.remove('hidden');
+      document.getElementById('customerEmail').value = '';
+      document.getElementById('customerEmail').focus();
     }
 
-    window.addEventListener('load', function() {
-      updateStatus();
-      setTimeout(updateStatus, 2000);
-    });
+    function closeEmailModal() {
+      document.getElementById('emailModal').classList.add('hidden');
+      pendingPayment = { tier: null, amount: null, planName: null };
+    }
 
-    function startPayment(tier, amount, planName) {
-      if (typeof LencoPay === 'undefined') {
-        alert('Payment system not ready. Refresh or check console.');
+    // Proceed to payment with collected email
+    function proceedToPayment() {
+      const email = document.getElementById('customerEmail').value.trim();
+      if (!email) {
+        alert('Please enter your email address.');
+        return;
+      }
+      if (!pendingPayment.tier) {
+        closeEmailModal();
         return;
       }
 
+      const { tier, amount, planName } = pendingPayment;
+      closeEmailModal();
+
+      if (typeof LencoPay === 'undefined') {
+        alert('Payment system not ready. Refresh the page.');
+        return;
+      }
+
+      const reference = `SP-${tier}-${Date.now()}`;
+
       LencoPay.getPaid({
         key: LENCO_PUBLIC_KEY,
-        reference: `SP-${tier}-${Date.now()}`,
-        email: '',
+        reference: reference,
+        email: email,
         amount: amount,
         currency: 'USD',
         channels: ['card', 'mobile-money'],
-        metadata: { tier, planName },
-        onSuccess: (response) => {
-          window.location.href = `success.html?reference=${response.reference}&plan=${tier}`;
+        customer: {
+          firstName: '',
+          lastName: '',
+          phone: ''
         },
-        onClose: () => alert('Payment cancelled.'),
-        onConfirmationPending: () => alert('Payment pending confirmation.')
+        onSuccess: function(response) {
+          window.location.href = `success.html?reference=${response.reference}&plan=${tier}&email=${encodeURIComponent(email)}`;
+        },
+        onClose: function() {
+          alert('Payment cancelled. You can try again anytime.');
+        },
+        onConfirmationPending: function() {
+          alert('Payment is being processed. We will notify you shortly.');
+        }
       });
     }
+
+    // Attach event listener after modal is in DOM
+    document.addEventListener('DOMContentLoaded', function() {
+      const confirmBtn = document.getElementById('confirmPaymentBtn');
+      if (confirmBtn) confirmBtn.addEventListener('click', proceedToPayment);
+    });
   </script>
 </body>
 </html>
