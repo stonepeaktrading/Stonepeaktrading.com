@@ -20,7 +20,8 @@
   <nav class="bg-white border-b sticky top-0 z-50">
     <div class="max-w-6xl mx-auto px-6 py-5 flex justify-between items-center">
       <div class="flex items-center gap-3">
-        <div class="w-9 h-9 bg-emerald-700 rounded-2xl flex items-center justify-center text-white font-bold">ST</div>
+        <!-- Logo – replace 'logo.png' with your actual logo file path -->
+        <img src="logo.png" alt="Stone Peak Trading" class="h-10 w-auto">
         <span class="font-bold text-3xl tracking-tight">Stone Peak Trading</span>
       </div>
       <a href="#pricing" class="font-medium hover:text-emerald-700">Pricing</a>
@@ -256,22 +257,22 @@
   </footer>
 
   <script>
-    // Ensure LencoPay is ready
     const LENCO_PUBLIC_KEY = 'pub-b279cea59e68bf274a5a3d60cf5c8ab090cc7cdc0a270a20';
 
-    // Wait for the page to load
-    window.addEventListener('DOMContentLoaded', function() {
-      // Optional: check if LencoPay is loaded
+    // Debug: check if Lenco script loaded
+    window.addEventListener('load', function() {
       if (typeof LencoPay === 'undefined') {
-        console.warn('LencoPay not loaded yet, will retry');
-        // You could retry or show a warning, but it's likely loaded by now
+        console.error('LencoPay failed to load. Check the script URL.');
+        // Optionally show a user-friendly message (you can uncomment below)
+        // alert('Payment system temporarily unavailable. Please contact support.');
+      } else {
+        console.log('LencoPay loaded successfully');
       }
     });
 
     function startPayment(tier, amount, planName) {
       if (typeof LencoPay === 'undefined') {
-        alert('Payment system is loading. Please refresh the page and try again.');
-        console.error('LencoPay not defined');
+        alert('Payment system is loading. Please refresh the page and try again. If the issue persists, contact phil@stonepeaktrading.com');
         return;
       }
 
@@ -280,7 +281,7 @@
       LencoPay.getPaid({
         key: LENCO_PUBLIC_KEY,
         reference: reference,
-        email: '',
+        email: '', // We'll capture email in the onboarding form
         amount: amount,
         currency: 'USD',
         channels: ['card', 'mobile-money'],
