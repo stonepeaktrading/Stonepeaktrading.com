@@ -12,9 +12,28 @@
   <style>
     body { font-family: 'Inter', system-ui, sans-serif; }
     .hero-bg { background: linear-gradient(135deg, #064e3b 0%, #10b981 100%); }
+    .debug-panel {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      background: #1e1e1e;
+      color: #0f0;
+      font-family: monospace;
+      font-size: 12px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      z-index: 9999;
+      opacity: 0.7;
+      pointer-events: none;
+    }
   </style>
 </head>
 <body class="bg-zinc-50 text-zinc-900">
+
+  <!-- Debug Panel -->
+  <div id="debugPanel" class="debug-panel">
+    LencoPay: <span id="lencoStatus">Loading...</span>
+  </div>
 
   <!-- Navigation -->
   <nav class="bg-white border-b sticky top-0 z-50">
@@ -259,20 +278,29 @@
   <script>
     const LENCO_PUBLIC_KEY = 'pub-b279cea59e68bf274a5a3d60cf5c8ab090cc7cdc0a270a20';
 
-    // Debug: check if Lenco script loaded
-    window.addEventListener('load', function() {
-      if (typeof LencoPay === 'undefined') {
-        console.error('LencoPay failed to load. Check the script URL.');
-        // Optionally show a user-friendly message (you can uncomment below)
-        // alert('Payment system temporarily unavailable. Please contact support.');
+    // Debug: update status and check if Lenco script is loaded
+    function updateLencoStatus() {
+      const statusSpan = document.getElementById('lencoStatus');
+      if (typeof LencoPay !== 'undefined') {
+        statusSpan.innerText = 'Ready';
+        statusSpan.style.color = '#0f0';
+        console.log('LencoPay is loaded and ready');
       } else {
-        console.log('LencoPay loaded successfully');
+        statusSpan.innerText = 'Not loaded';
+        statusSpan.style.color = '#f00';
+        console.error('LencoPay is not defined. Check script URL or network.');
       }
+    }
+
+    window.addEventListener('load', function() {
+      updateLencoStatus();
+      // Retry after a short delay in case script is still loading
+      setTimeout(updateLencoStatus, 2000);
     });
 
     function startPayment(tier, amount, planName) {
       if (typeof LencoPay === 'undefined') {
-        alert('Payment system is loading. Please refresh the page and try again. If the issue persists, contact phil@stonepeaktrading.com');
+        alert('Payment system is not ready. Please refresh the page. If the issue persists, ensure your domain is whitelisted with Lenco.');
         return;
       }
 
@@ -281,7 +309,7 @@
       LencoPay.getPaid({
         key: LENCO_PUBLIC_KEY,
         reference: reference,
-        email: '', // We'll capture email in the onboarding form
+        email: '',
         amount: amount,
         currency: 'USD',
         channels: ['card', 'mobile-money'],
