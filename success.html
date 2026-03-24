@@ -1,48 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Stone Peak Trading | Thank You</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, sans-serif;
-            background: #f5f7fa;
-            padding: 1.5rem;
-            text-align: center;
-        }
-        .container {
-            max-width: 500px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 2rem;
-            padding: 2rem 1.5rem;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
-        }
-        h1 { font-size: 2rem; margin-bottom: 1rem; }
-        p { margin: 1rem 0; line-height: 1.4; color: #2d3748; }
-        .btn {
-            display: inline-block;
-            background: #0a66c2;
-            color: white;
-            text-decoration: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 2rem;
-            font-weight: 600;
-            margin-top: 1rem;
-        }
-        .footer { margin-top: 1rem; font-size: 0.7rem; color: #718096; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Successful – Stone Peak Trading</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body { font-family: 'Inter', system-ui, sans-serif; }
+  </style>
 </head>
-<body>
-    <div class="container">
-        <div style="font-weight: 600; margin-bottom: 1rem;">Stone Peak Trading</div>
-        <h1>Payment Successful 🎉</h1>
-        <p>Thank you for subscribing!</p>
-        <p>We’ll send you a link to the onboarding questionnaire within 24 hours. If you have any questions, just reply to the email.</p>
-        <a href="index.html" class="btn">Back to Home</a>
+<body class="bg-zinc-50 text-zinc-900">
+
+  <div class="max-w-3xl mx-auto px-6 py-20">
+    <div class="bg-white rounded-3xl shadow-xl p-12 text-center">
+      <div class="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6">
+        <i class="fas fa-check text-emerald-600 text-4xl"></i>
+      </div>
+      <h1 class="text-4xl font-bold mb-4">Payment successful! 🎉</h1>
+      <p class="text-xl text-zinc-600 mb-8">
+        Thanks for choosing Stone Peak Trading. I'm excited to help you build your LinkedIn presence.
+      </p>
+
+      <div class="bg-emerald-50 rounded-xl p-6 mb-8 text-left">
+        <h2 class="text-2xl font-semibold mb-4">Next steps (10–15 minutes)</h2>
+        <ol class="space-y-4">
+          <li class="flex gap-3">
+            <span class="font-bold text-emerald-700">1.</span>
+            <span><strong>Fill out the onboarding form</strong> – This tells me everything I need: commodities, origins, trading style, and your preferred communication (email or WhatsApp).</span>
+          </li>
+          <li class="flex gap-3">
+            <span class="font-bold text-emerald-700">2.</span>
+            <span><strong>Authorize LinkedIn access</strong> – Click the link below to grant posting permission. It’s a one‑time OAuth connection (takes 30 seconds, no passwords shared).</span>
+          </li>
+          <li class="flex gap-3">
+            <span class="font-bold text-emerald-700">3.</span>
+            <span><strong>Wait for my draft</strong> – I’ll write your first batch of posts within 2 business days and send them for your review.</span>
+          </li>
+        </ol>
+      </div>
+
+      <div class="space-y-4">
+        <!-- Replace YOUR_GOOGLE_FORM_URL with your actual Google Form link -->
+        <a href="YOUR_GOOGLE_FORM_URL" 
+           target="_blank"
+           class="inline-block w-full bg-emerald-700 text-white font-semibold py-4 rounded-xl hover:bg-emerald-800 transition">
+          <i class="fas fa-file-alt mr-2"></i> Complete Onboarding Form
+        </a>
+        <!-- Replace YOUR_POSTBRIDGE_OAUTH_URL with your actual PostBridge OAuth link -->
+        <a href="YOUR_POSTBRIDGE_OAUTH_URL" 
+           target="_blank"
+           class="inline-block w-full bg-zinc-800 text-white font-semibold py-4 rounded-xl hover:bg-zinc-900 transition">
+          <i class="fab fa-linkedin mr-2"></i> Authorize LinkedIn Access (One Time)
+        </a>
+      </div>
+
+      <p class="text-sm text-zinc-500 mt-8">
+        If you have any questions, reply to this email or WhatsApp me at +260 XXX XXX XXX.
+      </p>
     </div>
-    <div class="footer">© 2025 Stone Peak Trading</div>
+  </div>
+
+  <script>
+    // Optional: parse the URL parameters (reference, plan, email) for tracking
+    const urlParams = new URLSearchParams(window.location.search);
+    const reference = urlParams.get('reference');
+    const plan = urlParams.get('plan');
+    const email = urlParams.get('email');
+    console.log('Payment reference:', reference, 'Plan:', plan, 'Email:', email);
+    // You could send this info to your analytics or store it
+  </script>
+
 </body>
 </html>
