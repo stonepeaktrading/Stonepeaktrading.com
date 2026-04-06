@@ -416,7 +416,7 @@
   <div class="success-wrap" id="success-view">
     <div class="success-icon">✦</div>
     <div class="success-title">We're in business.</div>
-    <p class="success-sub">Your onboarding form has been received. We will be in touch within 48 hours to confirm your kick-off call and get the engagement underway.<br><br>Welcome to Stone Peak Trading Consultancy.</p>
+    <p class="success-sub">Your onboarding form has been received. We will be in touch within 48 hours to confirm your kick-off call and get the engagement underway.<br><br>Welcome to Stone Peak Trading Consultancy.<br><br>Returning you to Stone Peak Trading in a moment...</p>
   </div>
 </div>
 
@@ -455,6 +455,9 @@
         document.getElementById('form-view').style.display = 'none';
         document.getElementById('success-view').style.display = 'block';
         window.scrollTo(0, 0);
+        setTimeout(function() {
+          window.location.href = 'index.html';
+        }, 5000);
       } else {
         alert('Something went wrong. Please email consult@stonepeaktrading.com directly.');
         btn.textContent = 'Submit & Confirm Onboarding';
