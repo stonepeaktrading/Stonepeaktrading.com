@@ -423,7 +423,7 @@
   <div class="success-wrap" id="success-view">
     <div class="success-icon">✦</div>
     <div class="success-title">You're in.</div>
-    <p class="success-sub">Your onboarding form has been received. Phil will be in touch within 48 hours to confirm your start date and kick off your first session.<br><br>Welcome to The Physical Commodity Trading System.</p>
+    <p class="success-sub">Your onboarding form has been received. We will be in touch within 48 hours to confirm your start date and kick off your first session.<br><br>Welcome to The Physical Commodity Trading System.<br><br>Returning you to Stone Peak Trading in a moment...</p>
   </div>
 
 </div>
@@ -471,6 +471,9 @@
         document.getElementById('form-view').style.display = 'none';
         document.getElementById('success-view').style.display = 'block';
         window.scrollTo(0, 0);
+        setTimeout(function() {
+          window.location.href = 'index.html';
+        }, 5000);
       } else {
         alert('Something went wrong. Please email phil@stonepeaktrading.com directly.');
         btn.textContent = 'Submit & Complete Enrollment';
