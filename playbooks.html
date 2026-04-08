@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Playbook Library — Stone Peak Trading</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080c12;
+    --bg-2: #0d1420;
+    --bg-3: #111927;
+    --border: rgba(180, 155, 100, 0.15);
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --gold-dim: rgba(201, 168, 76, 0.3);
+    --text: #e8e2d6;
+    --text-dim: #8a8070;
+    --text-mid: #b8b0a0;
+    --white: #f5f2ed;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 18px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    background: rgba(8, 12, 18, 0.95);
+    backdrop-filter: blur(12px);
+  }
+
+  .nav-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    align-items: center;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+
+  .nav-cta {
+    color: var(--gold) !important;
+    border: 1px solid var(--gold-dim);
+    padding: 8px 20px;
+    transition: all 0.3s ease !important;
+  }
+
+  .nav-cta:hover { background: var(--gold-dim) !important; }
+
+  .nav-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--gold);
+    font-size: 20px;
+    cursor: pointer;
+  }
+
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 61px; left: 0; right: 0;
+    background: var(--bg-2);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    z-index: 99;
+    flex-direction: column;
+  }
+
+  .mobile-menu.active { display: flex; }
+
+  .mobile-menu a {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-mid);
+    text-decoration: none;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+    transition: color 0.2s;
+  }
+
+  .mobile-menu a:last-child { border-bottom: none; }
+  .mobile-menu a:hover { color: var(--gold); }
+
+  .hero {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 100px 48px 56px;
+    border-top: 1px solid var(--border);
+    margin-top: 61px;
+  }
+
+  .hero-tag {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.2s forwards;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .hero-tag::before {
+    content: '';
+    width: 28px;
+    height: 1px;
+    background: var(--gold);
+    flex-shrink: 0;
+  }
+
+  .hero-headline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(38px, 5vw, 64px);
+    font-weight: 300;
+    line-height: 1.05;
+    color: var(--white);
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.4s forwards;
+  }
+
+  .hero-headline em {
+    font-style: italic;
+    color: var(--gold-light);
+    display: block;
+  }
+
+  .hero-sub {
+    font-size: 13px;
+    color: var(--text-mid);
+    line-height: 1.9;
+    max-width: 580px;
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.6s forwards;
+  }
+
+  .hero-note {
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.08em;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.8s forwards;
+  }
+
+  .section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 56px 48px;
+    border-top: 1px solid var(--border);
+  }
+
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+    max-width: 160px;
+  }
+
+  /* Pricing options */
+  .pricing-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    background: var(--border);
+    margin-bottom: 56px;
+  }
+
+  .pricing-item {
+    background: var(--bg-2);
+    padding: 32px 28px;
+  }
+
+  .pricing-item.featured { background: var(--bg-3); border-top: 2px solid var(--gold); }
+
+  .pricing-label {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+
+  .pricing-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 10px;
+  }
+
+  .pricing-desc { font-size: 12px; color: var(--text-dim); line-height: 1.7; }
+
+  /* Stage list */
+  .stages-list { display: flex; flex-direction: column; }
+
+  .stage-block {
+    border-top: 1px solid var(--border);
+    padding: 40px 0;
+  }
+
+  .stage-block:last-child { border-bottom: 1px solid var(--border); }
+
+  .stage-header {
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    align-items: start;
+    gap: 32px;
+    margin-bottom: 24px;
+    cursor: pointer;
+  }
+
+  .stage-header:hover .stage-title { color: var(--gold-light); }
+
+  .stage-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 48px;
+    font-weight: 300;
+    color: var(--gold-dim);
+    line-height: 1;
+    padding-top: 4px;
+  }
+
+  .stage-info {}
+
+  .stage-tag {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+
+  .stage-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--white);
+    line-height: 1.2;
+    margin-bottom: 8px;
+    transition: color 0.2s;
+  }
+
+  .stage-desc { font-size: 12px; color: var(--text-dim); line-height: 1.7; max-width: 560px; }
+
+  .stage-count {
+    font-size: 11px;
+    color: var(--text-dim);
+    white-space: nowrap;
+    padding-top: 8px;
+  }
+
+  .stage-volumes {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    background: var(--border);
+    margin-left: 112px;
+  }
+
+  .volume-item {
+    background: var(--bg-2);
+    padding: 20px 20px;
+    transition: background 0.2s;
+  }
+
+  .volume-item:hover { background: var(--bg-3); }
+
+  .volume-num {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--text-dim);
+    margin-bottom: 6px;
+  }
+
+  .volume-title {
+    font-size: 12px;
+    color: var(--text-mid);
+    line-height: 1.5;
+  }
+
+  .volume-coming {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    margin-top: 6px;
+  }
+
+  /* Waitlist CTA */
+  .waitlist-cta {
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    padding: 56px 64px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: center;
+  }
+
+  .waitlist-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 40px;
+    font-weight: 300;
+    color: var(--white);
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+
+  .waitlist-title em { font-style: italic; color: var(--gold-light); }
+
+  .waitlist-body { font-size: 13px; color: var(--text-mid); line-height: 1.85; }
+
+  .waitlist-form { display: flex; flex-direction: column; gap: 12px; }
+
+  .waitlist-input {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    padding: 14px 20px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+  }
+
+  .waitlist-input:focus { border-color: var(--gold-dim); }
+  .waitlist-input::placeholder { color: var(--text-dim); }
+
+  .waitlist-btn {
+    background: var(--gold-dim);
+    border: 1px solid var(--gold);
+    padding: 15px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+  }
+
+  .waitlist-btn:hover { background: rgba(201, 168, 76, 0.5); }
+  .waitlist-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .waitlist-note { font-size: 11px; color: var(--text-dim); line-height: 1.6; }
+
+  .waitlist-success {
+    display: none;
+    text-align: center;
+    padding: 32px;
+    border: 1px solid var(--gold-dim);
+  }
+
+  .waitlist-success-icon { font-size: 28px; color: var(--gold); margin-bottom: 12px; }
+
+  .waitlist-success-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 300;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+
+  .waitlist-success-sub { font-size: 12px; color: var(--text-dim); line-height: 1.7; }
+
+  /* PCTS note */
+  .pcts-note {
+    background: var(--bg-3);
+    border: 1px solid var(--gold-dim);
+    border-left: 3px solid var(--gold);
+    padding: 24px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 32px;
+  }
+
+  .pcts-note-text { font-size: 13px; color: var(--text-mid); line-height: 1.7; }
+  .pcts-note-text strong { color: var(--gold-light); font-weight: 400; }
+
+  .pcts-note-link {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    text-decoration: none;
+    border: 1px solid var(--gold-dim);
+    padding: 10px 20px;
+    white-space: nowrap;
+    transition: all 0.3s;
+    flex-shrink: 0;
+  }
+
+  .pcts-note-link:hover { background: var(--gold-dim); }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 28px 48px;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .footer-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    text-decoration: none;
+  }
+
+  .footer-nav { display: flex; gap: 20px; list-style: none; }
+
+  .footer-nav a {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-nav a:hover { color: var(--gold); }
+  .footer-copy { font-size: 10px; color: var(--text-dim); text-align: right; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 1024px) {
+    .stage-volumes { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 900px) {
+    nav { padding: 16px 24px; }
+    .nav-links { display: none; }
+    .nav-toggle { display: block; }
+    .hero { padding: 88px 24px 48px; }
+    .section { padding: 44px 24px; }
+    .pricing-strip { grid-template-columns: 1fr; }
+    .stage-header { grid-template-columns: 56px 1fr; }
+    .stage-count { display: none; }
+    .stage-volumes { margin-left: 0; grid-template-columns: 1fr 1fr; }
+    .waitlist-cta { grid-template-columns: 1fr; gap: 40px; padding: 40px 24px; }
+    .pcts-note { flex-direction: column; gap: 16px; }
+    footer { grid-template-columns: 1fr; gap: 16px; padding: 24px; }
+    .footer-copy { text-align: left; }
+  }
+
+  @media (max-width: 600px) {
+    .stage-volumes { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-brand">Stone Peak Trading</a>
+  <ul class="nav-links">
+    <li><a href="trading.html">Trading</a></li>
+    <li><a href="consultancy.html">Consultancy</a></li>
+    <li><a href="physical-commodity-trading-system.html">PCTS™</a></li>
+    <li><a href="playbooks.html" class="active">Playbooks</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="physical-commodity-trading-system.html" class="nav-cta">Enrol Now</a></li>
+  </ul>
+  <button class="nav-toggle" id="nav-toggle">☰</button>
+</nav>
+
+<div class="mobile-menu" id="mobile-menu">
+  <a href="trading.html">Trading</a>
+  <a href="consultancy.html">Consultancy</a>
+  <a href="physical-commodity-trading-system.html">PCTS™</a>
+  <a href="playbooks.html">Playbooks</a>
+  <a href="about.html">About</a>
+  <a href="contact.html">Contact</a>
+  <a href="physical-commodity-trading-system.html">Enrol Now</a>
+</div>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-tag">The Stone Peak Trading Playbook Library — Coming Soon</div>
+  <h1 class="hero-headline">
+    Every stage of a physical commodity trade.
+    <em>Documented by active traders.</em>
+  </h1>
+  <p class="hero-sub">37 volumes across 9 stages of physical commodity trading. From understanding how markets work to building a repeatable pipeline — written from inside the market, not from the outside looking in.</p>
+  <p class="hero-note">Launching soon — join the waitlist for early access pricing.</p>
+</div>
+
+<!-- Pricing options -->
+<section class="section">
+  <div class="section-label">How the library works</div>
+  <div class="pricing-strip">
+    <div class="pricing-item">
+      <div class="pricing-label">Option 1</div>
+      <div class="pricing-title">Individual Playbooks</div>
+      <div class="pricing-desc">Buy any single volume on its own. Each playbook covers one specific topic in depth — standalone, immediately applicable.</div>
+    </div>
+    <div class="pricing-item">
+      <div class="pricing-label">Option 2</div>
+      <div class="pricing-title">Stage Bundles</div>
+      <div class="pricing-desc">Buy all volumes in a stage together. Best for traders who want to master one area of the trading process completely.</div>
+    </div>
+    <div class="pricing-item featured">
+      <div class="pricing-label">Option 3 — Best value</div>
+      <div class="pricing-title">The Complete Collection</div>
+      <div class="pricing-desc">Own the entire 37-volume library. Every stage, every volume, every framework — at one price. Included free inside The Physical Commodity Trading System™.</div>
+    </div>
+  </div>
+
+  <!-- PCTS note -->
+  <div class="pcts-note">
+    <div class="pcts-note-text">Already in <strong>The Physical Commodity Trading System™</strong>? The entire playbook library is included in your enrollment at no extra cost. Every volume, every stage — yours from day one.</div>
+    <a href="physical-commodity-trading-system.html" class="pcts-note-link">Learn about PCTS™</a>
+  </div>
+</section>
+
+<!-- Stages -->
+<section class="section">
+  <div class="section-label">The full library — 37 volumes across 9 stages</div>
+  <div class="stages-list">
+
+    <div class="stage-block">
+      <div class="stage-header">
+        <div class="stage-num">01</div>
+        <div class="stage-info">
+          <div class="stage-tag">Foundation</div>
+          <div class="stage-title">Understanding the Market</div>
+          <div class="stage-desc">How the physical commodity market is structured, who the players are, and how price is formed before you ever negotiate a deal.</div>
+        </div>
+        <div class="stage-count">4 volumes</div>
+      </div>
+      <div class="stage-volumes">
+        <div class="volume-item"><div class="volume-num">Vol 01</div><div class="volume-title">How the Physical Commodity Market Works</div><div class="volume-coming">Coming Soon</div></div>
+        <div class="volume-item"><div class="volume-num">Vol 02</div><div class="volume-title">The Players — Who Does What and Why It Matters</div><div class="volume-coming">Coming Soon</div></div>
+        <div class="volume-item"><div class="volume-num">Vol 03</div><div class="volume-title">How Price is Formed — Spot, Basis and the Futures Relationship</div><div class="volume-coming">Coming Soon</div></div>
+        <div class="volume-item"><div class="volume-num">Vol 04</div><div class="volume-title">Seasons, Cycles and Origins — Reading the Market Before You Trade</div><div class="volume-coming">Coming Soon</div></div>
+      </div>
+    </div>
+
+    <div class="stage-block">
+      <div class="stage-header">
+        <div class="stage-num">02</div>
+        <div class="stage-info">
+          <div class="stage-tag">Supply Side</div>
+          <div class="stage-title">Sourcing</div>
+          <div class="stage-desc">How to find, approach and build a reliable supply network that survives between seasons and doesn't collapse when one relationship goes quiet.</div>
+        </div>
+        <div class="stage-count">4 volumes</div>
+      </div>
+      <div class="stage-volumes">
+        <div class="volume-item"><div class="volume-num">Vol 01</div><div class="volume-title">Finding and Approaching Farmers and Aggregators</div><div class="volume-coming">Coming Soon</div></div>
+        <div class="volume-item"><div class="volume-num">Vol 02</div><div class="volume-title">Assessing Quality at Origin</div><div class="volume-coming">Coming Soon</div></div>
+        <div class="volume-item"><div class="volume-num">Vol 03</div><div class="volume-title">Negotiating at Farm Gate and Depot Level</div><div class="volume-coming">Coming Soon</div></div>
+        <div class="volume-item"><div class="volume-num">Vol 04</div><div class="volume-title">Building a Supply Network That Survives Between Seasons</div><div class="volume-coming">Coming Soon</div></div>
+      </div>
+    </div>
+
+    <div class="stage-block">
+      <div class="stage-header">
+        <div class="stage-num">03</div>
+        <div class="stage-info">
+          <div class="stage-tag">Demand Side</div>
+          <div class="stage-title">Finding Buyers</div>
+          <div class="stage-desc">Who buys physical commodities, how to approach them, and how to convert one-off transactions into long term relationships that generate consistent deal flow.</div>
+        </div>
+        <div class="stage-count">4 volumes</div>
+      </div>
+      <div class="stage-volumes">
+        <div class="volume-item"><div class="volume-num">Vol 01</div><div class="volume-title">Who Buys Physical Commodities — Mills, Processors, Exporters, Offtakers</div><div class="volume-coming">Coming Soon</div></div>
+        <div class="volume-item"><div class="volume-num">Vol 02</div><div class="volume-title">How to Approach and Qualify a Buyer</div><div class="volume-coming">Coming Soon</div></div>
+        <div class="volume-item"><div class="volume-num">Vol 03</div><div class="volume-title">What Buyers Actually Need — Quality, Consistency, Documentation</div><div class="volume-coming">Coming Soon</div></div>
+        <div class="volume-item"><div class="volume-num">Vol 04</div><div class="volume-title">Building Long Term Buyer Relationships That Generate Repeat Business</div><div class="volume-coming">Coming Soon</div></div>
+      </div>
+    </div>
+
+    <div class="stage-block">
+      <div class="stage-header">
+        <div class="stage-num">04</div>
+        <div class="stage-info">
+          <div class="stage-tag">Execution</div>
+          <div class="stage-title">Deal Structure</div>
+          <div class="stage-desc">How to put a physical commodity deal together from first conversation to signed contract — and how to make sure both sides actually perform.</div>
+        </div>
+        <div class="stage-count">4 volumes</div>
+      </div>
+      <div class="stage-volumes">
+        <div class="volume-item"><div class="volume-num">Vol 01</div><div class="volume-title">Anatomy of a Physical Commodity Deal</div><div class="volume-coming">Coming Soon</div></div>
+        <div class="volume-item"><div class="volume-num">Vol 02</div><div class="volume-title">Pricing Mechanisms — Fixed Price, Basis Trades and Indexed Contracts</div><div class="volume-coming">Coming Soon</div></div>
+        <div class="volume-item"><div class="volume-num">Vol 03</div><div class="volume-title">Contract Terms — Delivery, Quality Specs, Payment and Dispute Resolution</div><div class="volume-coming">Coming Soon</div></div>
+        <div class="volume-item"><div class="volume-num">Vol 04</div><div class="volume-title">Making Sure Both Sides Perform — How to Protect Yourself Before Signing</div><div class="volume-coming">Coming Soon</div></div>
+      </div>
+    </div>
+
+    <div class="stage-block">
+      <div class="stage-header">
+        <div class="stage-num">05</div>
+        <div class="stage-info">
+          <div class="stage-tag">Movement</div>
+          <div class="stage-title">Logistics</div>
+          <div class="stage-desc">How commodities move, how freight is priced, and how to manage warehousing and storage without it eating your margin.</div>
+        </div>
+        <div class="stage-count">4 volumes</div>
+      </div>
+      <div class="stage-volumes">
+        <div class="volume-item"><div class="volume-num">Vol 01</div><div class="volume-title">How Grain Moves — Trucks, Rail, Port and Vessel</div><div class="volume-coming">Coming Soon</div></div>
+        <div class="volume-item"><div class="volume-num">Vol 02</div><div class="volume-title">Freight Pricing and Who Controls It</div><div class="volume-coming">Coming Soon</div></div>
+        <div class="volume-item"><div class="volume-num">Vol 03</div><div class="volume-title">Warehousing and Storage — Costs, Risks and When You Need It</div><div class="volume-coming">Coming Soon</div></div>
+        <div class="volume-item"><div class="volume-num">Vol 04</div><div class="volume-title">Incoterms for Physical Commodity Traders — What They Mean in Practice</div><div class="volume-coming">Coming Soon</div></div>
+      </div>
+    </div>
+
+    <div class="stage-block">
+      <div class="stage-header">
+        <div class="stage-num">06</div>
+        <div class="stage-info">
+          <div class="stage-tag">Capital</div>
+          <div class="stage-title">Trade Finance</div>
+          <div class="stage-desc">Why deals die at finance, what options exist for independent traders, and how to access capital that most traders never find.</div>
+        </div>
+        <div class="stage-count">5 volumes</div>
+      </div>
+      <div class="stage-volumes">
+        <div class="volume-item"><div class="volume-num">Vol 01</div><div class="volume-title">Why Deals Die at Finance and How to Prevent It</div><div class="volume-coming">Coming Soon</div></div>
+        <div class="volume-item"><div class="volume-num">Vol 02</div><div class="volume-title">Types of Trade Finance Available to Independent Traders</div><div class="volume-coming">Coming Soon</div></div>
+        <div class="volume-item"><div class="volume-num">Vol 03</div><div class="volume-title">How to Approach and Pitch Finance Partners</div><div class="volume-coming">Coming Soon</div></div>
+        <div class="volume-item"><div class="volume-num">Vol 04</div><div class="volume-title">Profit Share and Revenue Percentage Structures</div><div class="volume-coming">Coming Soon</div></div>
+        <div class="volume-item"><div class="volume-num">Vol 05</div><div class="volume-title">Letters of Credit and Payment Guarantees — What They Actually Protect</div><div class="volume-coming">Coming Soon</div></div>
+      </div>
+    </div>
+
+    <div class="stage-block">
+      <div class="stage-header">
+        <div class="stage-num">07</div>
+        <div class="stage-info">
+          <div class="stage-tag">Protection</div>
+          <div class="stage-title">Risk Management</div>
+          <div class="stage-desc">How to assess a deal before committing and how to protect your position when basis, freight, FX or counterparties move against you.</div>
+        </div>
+        <div class="stage-count">6 volumes</div>
+      </div>
+      <div class="stage-volumes">
+        <div class="volume-item"><div class="volume-num">Vol 01</div><div class="volume-title">How to Read a Deal Before You Commit</div><div class="volume-coming">Coming Soon</div></div>
+        <div class="volume-item"><div class="volume-num">Vol 02</div><div class="volume-title">Basis Risk — What It Is and How It Moves Against You</div><div class="volume-coming">Coming Soon</div></div>
+        <div class="volume-item"><div class="volume-num">Vol 03</div><div class="volume-title">Freight Risk — Protecting Your Margin When Logistics Costs Spike</div><div class="volume-coming">Coming Soon</div></div>
+        <div class="volume-item"><div class="volume-num">Vol 04</div><div class="volume-title">Counterparty Risk — How to Vet Who You're Dealing With</div><div class="volume-coming">Coming Soon</div></div>
+        <div class="volume-item"><div class="volume-num">Vol 05</div><div class="volume-title">Currency Risk — How FX Moves Can Wipe a Profitable Trade</div><div class="volume-coming">Coming Soon</div></div>
+        <div class="volume-item"><div class="volume-num">Vol 06</div><div class="volume-title">When a Deal Goes Wrong — How to Respond, Recover and Protect Yourself</div><div class="volume-coming">Coming Soon</div></div>
+      </div>
+    </div>
+
+    <div class="stage-block">
+      <div class="stage-header">
+        <div class="stage-num">08</div>
+        <div class="stage-info">
+          <div class="stage-tag">Delivery</div>
+          <div class="stage-title">Execution</div>
+          <div class="stage-desc">Managing a live deal from contract to delivery — coordinating logistics, documentation and payment simultaneously without anything falling through.</div>
+        </div>
+        <div class="stage-count">4 volumes</div>
+      </div>
+      <div class="stage-volumes">
+        <div class="volume-item"><div class="volume-num">Vol 01</div><div class="volume-title">Managing a Live Deal — From Contract to Delivery</div><div class="volume-coming">Coming Soon</div></div>
+        <div class="volume-item"><div class="volume-num">Vol 02</div><div class="volume-title">Coordinating Logistics, Documentation and Payment Simultaneously</div><div class="volume-coming">Coming Soon</div></div>
+        <div class="volume-item"><div class="volume-num">Vol 03</div><div class="volume-title">Quality Disputes — How They Happen and How to Resolve Them</div><div class="volume-coming">Coming Soon</div></div>
+        <div class="volume-item"><div class="volume-num">Vol 04</div><div class="volume-title">Getting Paid — Payment Terms, Delays and Defaults</div><div class="volume-coming">Coming Soon</div></div>
+      </div>
+    </div>
+
+    <div class="stage-block">
+      <div class="stage-header">
+        <div class="stage-num">09</div>
+        <div class="stage-info">
+          <div class="stage-tag">Scale</div>
+          <div class="stage-title">Building a Trading Operation</div>
+          <div class="stage-desc">Going from one-off deals to a repeatable monthly pipeline — the systems, tools and decisions that separate traders who scale from those who stay stuck.</div>
+        </div>
+        <div class="stage-count">4 volumes</div>
+      </div>
+      <div class="stage-volumes">
+        <div class="volume-item"><div class="volume-num">Vol 01</div><div class="volume-title">Going From One-Off Deals to a Repeatable Monthly Pipeline</div><div class="volume-coming">Coming Soon</div></div>
+        <div class="volume-item"><div class="volume-num">Vol 02</div><div class="volume-title">Solo Operator vs Building a Team — How to Decide and How to Scale</div><div class="volume-coming">Coming Soon</div></div>
+        <div class="volume-item"><div class="volume-num">Vol 03</div><div class="volume-title">Systems, Tools and Processes That Keep Deals From Falling Through</div><div class="volume-coming">Coming Soon</div></div>
+        <div class="volume-item"><div class="volume-num">Vol 04</div><div class="volume-title">How to Track Performance and Know If Your Operation Is Actually Profitable</div><div class="volume-coming">Coming Soon</div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Waitlist CTA -->
+<section class="section">
+  <div class="waitlist-cta">
+    <div>
+      <div class="waitlist-title">Be first.<br><em>Get early access pricing.</em></div>
+      <p class="waitlist-body">The first playbooks drop soon. Waitlist members get notified first and receive early access pricing before the library opens to the public. Individual playbooks, stage bundles and the complete collection will all be available.</p>
+    </div>
+    <div>
+      <div id="waitlist-form-wrap" class="waitlist-form">
+        <input type="text" id="wl-name" class="waitlist-input" placeholder="Your full name">
+        <input type="email" id="wl-email" class="waitlist-input" placeholder="Your email address">
+        <select id="wl-interest" class="waitlist-input" style="appearance:none; cursor:pointer;">
+          <option value="" disabled selected>What interests you most?</option>
+          <option>Individual playbooks</option>
+          <option>Stage bundles</option>
+          <option>The complete collection</option>
+          <option>Not sure yet</option>
+        </select>
+        <button class="waitlist-btn" id="wl-btn">Join the Waitlist</button>
+        <p class="waitlist-note">No spam. One email when the first playbook drops — and early access pricing before anyone else.</p>
+      </div>
+      <div class="waitlist-success" id="waitlist-success">
+        <div class="waitlist-success-icon">✦</div>
+        <div class="waitlist-success-title">You're on the list.</div>
+        <p class="waitlist-success-sub">We'll be in touch when the first playbook drops — with early access pricing before the public launch.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <a href="index.html" class="footer-brand">Stone Peak Trading</a>
+  <ul class="footer-nav">
+    <li><a href="trading.html">Trading</a></li>
+    <li><a href="consultancy.html">Consultancy</a></li>
+    <li><a href="physical-commodity-trading-system.html">PCTS™</a></li>
+    <li><a href="playbooks.html">Playbooks</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div class="footer-copy">&copy; 2026 Stone Peak Trading. All rights reserved.</div>
+</footer>
+
+<script>
+  document.getElementById('wl-btn').addEventListener('click', function() {
+    var name = document.getElementById('wl-name').value.trim();
+    var email = document.getElementById('wl-email').value.trim();
+    var interest = document.getElementById('wl-interest').value;
+
+    if (!name || !email) {
+      alert('Please enter your name and email address.');
+      return;
+    }
+
+    var btn = this;
+    btn.textContent = 'Joining...';
+    btn.disabled = true;
+
+    fetch('https://formspree.io/f/xojppong', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        name: name,
+        email: email,
+        interest: interest || 'Not specified',
+        _subject: 'Playbook Waitlist — Stone Peak Trading',
+        form_type: 'Playbook Waitlist'
+      })
+    }).then(function(res) {
+      if (res.ok) {
+        document.getElementById('waitlist-form-wrap').style.display = 'none';
+        document.getElementById('waitlist-success').style.display = 'block';
+      } else {
+        alert('Something went wrong. Please try again.');
+        btn.textContent = 'Join the Waitlist';
+        btn.disabled = false;
+      }
+    }).catch(function() {
+      alert('Something went wrong. Please try again.');
+      btn.textContent = 'Join the Waitlist';
+      btn.disabled = false;
+    });
+  });
+
+  document.getElementById('nav-toggle').addEventListener('click', function() {
+    document.getElementById('mobile-menu').classList.toggle('active');
+  });
+
+  document.addEventListener('click', function(e) {
+    var menu = document.getElementById('mobile-menu');
+    var toggle = document.getElementById('nav-toggle');
+    if (menu && toggle && !menu.contains(e.target) && !toggle.contains(e.target)) {
+      menu.classList.remove('active');
+    }
+  });
+</script>
+
+</body>
+</html>
