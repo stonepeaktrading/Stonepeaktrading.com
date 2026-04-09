@@ -7,593 +7,124 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #080c12;
-    --bg-2: #0d1420;
-    --bg-3: #111927;
+    --bg: #080c12; --bg-2: #0d1420; --bg-3: #111927;
     --border: rgba(180, 155, 100, 0.15);
-    --gold: #c9a84c;
-    --gold-light: #e8c97a;
-    --gold-dim: rgba(201, 168, 76, 0.3);
-    --text: #e8e2d6;
-    --text-dim: #8a8070;
-    --text-mid: #b8b0a0;
-    --white: #f5f2ed;
+    --gold: #c9a84c; --gold-light: #e8c97a; --gold-dim: rgba(201, 168, 76, 0.3);
+    --text: #e8e2d6; --text-dim: #8a8070; --text-mid: #b8b0a0; --white: #f5f2ed;
   }
-
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: 'DM Mono', monospace; font-weight: 300; line-height: 1.7; overflow-x: hidden; }
+  body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E"); pointer-events: none; z-index: 1000; opacity: 0.4; }
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Mono', monospace;
-    font-weight: 300;
-    line-height: 1.7;
-    overflow-x: hidden;
-  }
-
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 1000;
-    opacity: 0.4;
-  }
-
-  nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    padding: 18px 48px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid var(--border);
-    background: rgba(8, 12, 18, 0.95);
-    backdrop-filter: blur(12px);
-  }
-
-  .nav-brand {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 18px;
-    font-weight: 600;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--gold);
-    text-decoration: none;
-  }
-
-  .nav-links {
-    display: flex;
-    gap: 28px;
-    align-items: center;
-    list-style: none;
-  }
-
-  .nav-links a {
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--text-dim);
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 18px 48px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); background: rgba(8, 12, 18, 0.95); backdrop-filter: blur(12px); }
+  .nav-brand { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); text-decoration: none; }
+  .nav-links { display: flex; gap: 28px; align-items: center; list-style: none; }
+  .nav-links a { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
   .nav-links a:hover, .nav-links a.active { color: var(--gold); }
-
-  .nav-cta {
-    color: var(--gold) !important;
-    border: 1px solid var(--gold-dim);
-    padding: 8px 20px;
-    transition: all 0.3s ease !important;
-  }
-
+  .nav-cta { color: var(--gold) !important; border: 1px solid var(--gold-dim); padding: 8px 20px; transition: all 0.3s ease !important; }
   .nav-cta:hover { background: var(--gold-dim) !important; }
-
-  .nav-toggle {
-    display: none;
-    background: none;
-    border: none;
-    color: var(--gold);
-    font-size: 20px;
-    cursor: pointer;
-  }
-
-  .mobile-menu {
-    display: none;
-    position: fixed;
-    top: 61px; left: 0; right: 0;
-    background: var(--bg-2);
-    border-bottom: 1px solid var(--border);
-    padding: 0 24px;
-    z-index: 99;
-    flex-direction: column;
-  }
-
+  .nav-toggle { display: none; background: none; border: none; color: var(--gold); font-size: 20px; cursor: pointer; }
+  .mobile-menu { display: none; position: fixed; top: 61px; left: 0; right: 0; background: var(--bg-2); border-bottom: 1px solid var(--border); padding: 0 24px; z-index: 99; flex-direction: column; }
   .mobile-menu.active { display: flex; }
-
-  .mobile-menu a {
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--text-mid);
-    text-decoration: none;
-    padding: 14px 0;
-    border-bottom: 1px solid var(--border);
-    transition: color 0.2s;
-  }
-
+  .mobile-menu a { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-mid); text-decoration: none; padding: 14px 0; border-bottom: 1px solid var(--border); transition: color 0.2s; }
   .mobile-menu a:last-child { border-bottom: none; }
   .mobile-menu a:hover { color: var(--gold); }
 
-  .hero {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 100px 48px 56px;
-    border-top: 1px solid var(--border);
-    margin-top: 61px;
-  }
-
-  .hero-tag {
-    font-size: 11px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 24px;
-    opacity: 0;
-    animation: fadeUp 0.8s ease 0.2s forwards;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .hero-tag::before {
-    content: '';
-    width: 28px;
-    height: 1px;
-    background: var(--gold);
-    flex-shrink: 0;
-  }
-
-  .hero-headline {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(38px, 5vw, 64px);
-    font-weight: 300;
-    line-height: 1.05;
-    color: var(--white);
-    margin-bottom: 24px;
-    opacity: 0;
-    animation: fadeUp 0.8s ease 0.4s forwards;
-  }
-
-  .hero-headline em {
-    font-style: italic;
-    color: var(--gold-light);
-    display: block;
-  }
-
-  .hero-sub {
-    font-size: 13px;
-    color: var(--text-mid);
-    line-height: 1.9;
-    max-width: 580px;
-    margin-bottom: 36px;
-    opacity: 0;
-    animation: fadeUp 0.8s ease 0.6s forwards;
-  }
-
-  .hero-cta {
-    opacity: 0;
-    animation: fadeUp 0.8s ease 0.8s forwards;
-    display: flex;
-    gap: 14px;
-    flex-wrap: wrap;
-  }
-
-  .btn {
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    padding: 12px 28px;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    font-family: 'DM Mono', monospace;
-    display: inline-block;
-  }
-
-  .btn-primary {
-    background: var(--gold-dim);
-    border: 1px solid var(--gold);
-    color: var(--gold);
-  }
-
+  .hero { max-width: 900px; margin: 61px auto 0; padding: 100px 48px 56px; border-top: 1px solid var(--border); }
+  .hero-tag { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 24px; opacity: 0; animation: fadeUp 0.8s ease 0.2s forwards; display: flex; align-items: center; gap: 12px; }
+  .hero-tag::before { content: ''; width: 28px; height: 1px; background: var(--gold); flex-shrink: 0; }
+  .hero-headline { font-family: 'Cormorant Garamond', serif; font-size: clamp(38px, 5vw, 64px); font-weight: 300; line-height: 1.05; color: var(--white); margin-bottom: 24px; opacity: 0; animation: fadeUp 0.8s ease 0.4s forwards; }
+  .hero-headline em { font-style: italic; color: var(--gold-light); display: block; }
+  .hero-sub { font-size: 13px; color: var(--text-mid); line-height: 1.9; max-width: 580px; margin-bottom: 36px; opacity: 0; animation: fadeUp 0.8s ease 0.6s forwards; }
+  .hero-cta { opacity: 0; animation: fadeUp 0.8s ease 0.8s forwards; display: flex; gap: 14px; flex-wrap: wrap; }
+  .btn { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; padding: 12px 28px; text-decoration: none; transition: all 0.3s ease; font-family: 'DM Mono', monospace; display: inline-block; }
+  .btn-primary { background: var(--gold-dim); border: 1px solid var(--gold); color: var(--gold); }
   .btn-primary:hover { background: rgba(201, 168, 76, 0.5); }
-
-  .btn-secondary {
-    border: 1px solid var(--border);
-    color: var(--text-mid);
-  }
-
+  .btn-secondary { border: 1px solid var(--border); color: var(--text-mid); }
   .btn-secondary:hover { border-color: var(--gold-dim); color: var(--gold); }
 
-  .section {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 56px 48px;
-    border-top: 1px solid var(--border);
-  }
+  .section { max-width: 1200px; margin: 0 auto; padding: 56px 48px; border-top: 1px solid var(--border); }
+  .section-label { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 32px; display: flex; align-items: center; gap: 16px; }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); max-width: 160px; }
 
-  .section-label {
-    font-size: 11px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 32px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-
-  .section-label::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-    max-width: 160px;
-  }
-
-  /* How we trade */
-  .how-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2px;
-    background: var(--border);
-  }
-
-  .how-item {
-    background: var(--bg-2);
-    padding: 40px 32px;
-    transition: background 0.3s;
-  }
-
+  .how-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: var(--border); }
+  .how-item { background: var(--bg-2); padding: 40px 32px; transition: background 0.3s; }
   .how-item:hover { background: var(--bg-3); }
-
-  .how-num {
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    color: var(--gold);
-    margin-bottom: 16px;
-  }
-
-  .how-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 22px;
-    font-weight: 600;
-    color: var(--white);
-    margin-bottom: 12px;
-    line-height: 1.2;
-  }
-
+  .how-num { font-size: 10px; letter-spacing: 0.2em; color: var(--gold); margin-bottom: 16px; }
+  .how-title { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 600; color: var(--white); margin-bottom: 12px; line-height: 1.2; }
   .how-body { font-size: 12px; color: var(--text-dim); line-height: 1.85; }
 
-  /* Commodities */
-  .commodities-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 2px;
-    background: var(--border);
-  }
-
-  .commodity-category {
-    background: var(--bg-2);
-    padding: 36px 28px;
-  }
-
-  .commodity-category-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 20px;
-    font-weight: 600;
-    color: var(--white);
-    margin-bottom: 20px;
-    padding-bottom: 14px;
-    border-bottom: 1px solid var(--border);
-  }
-
+  .commodities-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; background: var(--border); }
+  .commodity-category { background: var(--bg-2); padding: 36px 28px; }
+  .commodity-category-title { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 600; color: var(--white); margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
   .commodity-list { list-style: none; }
-
-  .commodity-list li {
-    font-size: 12px;
-    color: var(--text-mid);
-    padding: 8px 0;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
+  .commodity-list li { font-size: 12px; color: var(--text-mid); padding: 8px 0; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
   .commodity-list li:last-child { border-bottom: none; }
+  .commodity-list li::before { content: ''; width: 4px; height: 4px; background: var(--gold); border-radius: 50%; flex-shrink: 0; }
 
-  .commodity-list li::before {
-    content: '';
-    width: 4px;
-    height: 4px;
-    background: var(--gold);
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-
-  /* Fertilizer special */
-  .fertilizer-section {
-    background: var(--bg-2);
-    border: 1px solid var(--border);
-    padding: 48px;
-  }
-
-  .fertilizer-intro {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 48px;
-    margin-bottom: 40px;
-    padding-bottom: 40px;
-    border-bottom: 1px solid var(--border);
-    align-items: start;
-  }
-
-  .fertilizer-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 32px;
-    font-weight: 300;
-    color: var(--white);
-    line-height: 1.2;
-  }
-
+  .fertilizer-section { background: var(--bg-2); border: 1px solid var(--border); padding: 48px; }
+  .fertilizer-intro { display: grid; grid-template-columns: 1fr 2fr; gap: 48px; margin-bottom: 40px; padding-bottom: 40px; border-bottom: 1px solid var(--border); align-items: start; }
+  .fertilizer-title { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 300; color: var(--white); line-height: 1.2; }
   .fertilizer-title em { font-style: italic; color: var(--gold-light); }
-
   .fertilizer-body { font-size: 13px; color: var(--text-mid); line-height: 1.85; }
-
-  .fertilizer-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2px;
-    background: var(--border);
-  }
-
-  .fertilizer-group {
-    background: var(--bg-3);
-    padding: 28px 24px;
-  }
-
-  .fertilizer-group-title {
-    font-size: 10px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 14px;
-  }
-
+  .fertilizer-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: var(--border); }
+  .fertilizer-group { background: var(--bg-3); padding: 28px 24px; }
+  .fertilizer-group-title { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; }
   .fertilizer-group ul { list-style: none; }
-
-  .fertilizer-group ul li {
-    font-size: 12px;
-    color: var(--text-mid);
-    padding: 6px 0;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    gap: 8px;
-    align-items: flex-start;
-  }
-
+  .fertilizer-group ul li { font-size: 12px; color: var(--text-mid); padding: 6px 0; border-bottom: 1px solid var(--border); display: flex; gap: 8px; align-items: flex-start; }
   .fertilizer-group ul li:last-child { border-bottom: none; }
+  .fertilizer-group ul li::before { content: '—'; color: var(--text-dim); flex-shrink: 0; font-size: 10px; margin-top: 2px; }
 
-  .fertilizer-group ul li::before {
-    content: '—';
-    color: var(--text-dim);
-    flex-shrink: 0;
-    font-size: 10px;
-    margin-top: 2px;
-  }
-
-  /* Inquiry */
-  .inquiry-wrap {
-    background: var(--bg-2);
-    border: 1px solid var(--border);
-    padding: 56px 64px;
-  }
-
-  .inquiry-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 64px;
-    align-items: start;
-  }
-
-  .inquiry-left {}
-
-  .inquiry-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 36px;
-    font-weight: 300;
-    color: var(--white);
-    line-height: 1.2;
-    margin-bottom: 16px;
-  }
-
+  .inquiry-wrap { background: var(--bg-2); border: 1px solid var(--border); padding: 56px 64px; }
+  .inquiry-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+  .inquiry-title { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 300; color: var(--white); line-height: 1.2; margin-bottom: 16px; }
   .inquiry-title em { font-style: italic; color: var(--gold-light); }
-
-  .inquiry-body {
-    font-size: 13px;
-    color: var(--text-mid);
-    line-height: 1.85;
-    margin-bottom: 28px;
-  }
-
-  .inquiry-contacts { display: flex; flex-direction: column; gap: 0; border: 1px solid var(--border); }
-
-  .inquiry-contact-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 14px 20px;
-    border-bottom: 1px solid var(--border);
-    transition: background 0.2s;
-  }
-
+  .inquiry-body { font-size: 13px; color: var(--text-mid); line-height: 1.85; margin-bottom: 28px; }
+  .inquiry-contacts { display: flex; flex-direction: column; border: 1px solid var(--border); }
+  .inquiry-contact-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; border-bottom: 1px solid var(--border); transition: background 0.2s; }
   .inquiry-contact-row:last-child { border-bottom: none; }
   .inquiry-contact-row:hover { background: var(--bg-3); }
-
-  .inquiry-contact-label {
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--text-dim);
-  }
-
-  .inquiry-contact-value {
-    font-size: 12px;
-    color: var(--text-mid);
-  }
-
-  .inquiry-contact-value a {
-    color: var(--text-mid);
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-
+  .inquiry-contact-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-dim); }
+  .inquiry-contact-value { font-size: 12px; color: var(--text-mid); }
+  .inquiry-contact-value a { color: var(--text-mid); text-decoration: none; transition: color 0.2s; }
   .inquiry-contact-value a:hover { color: var(--gold); }
 
   .form-field { margin-bottom: 18px; }
-
-  .form-label {
-    display: block;
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--text-dim);
-    margin-bottom: 8px;
-  }
-
-  .form-input, .form-select, .form-textarea {
-    width: 100%;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    padding: 12px 16px;
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    color: var(--text);
-    outline: none;
-    transition: border-color 0.2s;
-    appearance: none;
-  }
-
+  .form-label { display: block; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 8px; }
+  .form-input, .form-select, .form-textarea { width: 100%; background: var(--bg); border: 1px solid var(--border); padding: 12px 16px; font-family: 'DM Mono', monospace; font-size: 12px; color: var(--text); outline: none; transition: border-color 0.2s; appearance: none; }
   .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--gold-dim); }
   .form-input::placeholder, .form-textarea::placeholder { color: var(--text-dim); }
   .form-select option { background: var(--bg-2); }
   .form-textarea { resize: vertical; min-height: 100px; }
-
-  .form-submit {
-    width: 100%;
-    background: var(--gold-dim);
-    border: 1px solid var(--gold);
-    padding: 15px;
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--gold);
-    cursor: pointer;
-    transition: all 0.3s ease;
-    margin-top: 8px;
-  }
-
+  .form-submit { width: 100%; background: var(--gold-dim); border: 1px solid var(--gold); padding: 15px; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); cursor: pointer; transition: all 0.3s ease; margin-top: 8px; }
   .form-submit:hover { background: rgba(201, 168, 76, 0.5); }
   .form-submit:disabled { opacity: 0.5; cursor: not-allowed; }
-
-  .form-success {
-    display: none;
-    text-align: center;
-    padding: 48px 24px;
-  }
-
+  .form-success { display: none; text-align: center; padding: 48px 24px; }
   .form-success-icon { font-size: 32px; color: var(--gold); margin-bottom: 16px; }
-
-  .form-success-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 32px;
-    font-weight: 300;
-    color: var(--white);
-    margin-bottom: 12px;
-  }
-
+  .form-success-title { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 300; color: var(--white); margin-bottom: 12px; }
   .form-success-sub { font-size: 12px; color: var(--text-dim); line-height: 1.8; }
 
-  footer {
-    border-top: 1px solid var(--border);
-    padding: 28px 48px;
-    max-width: 1200px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    align-items: center;
-    gap: 24px;
-  }
-
-  .footer-brand {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 15px;
-    font-weight: 600;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--gold);
-    text-decoration: none;
-  }
-
+  footer { border-top: 1px solid var(--border); padding: 28px 48px; max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 24px; }
+  .footer-brand { font-family: 'Cormorant Garamond', serif; font-size: 15px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); text-decoration: none; }
   .footer-nav { display: flex; gap: 20px; list-style: none; }
-
-  .footer-nav a {
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--text-dim);
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-
+  .footer-nav a { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
   .footer-nav a:hover { color: var(--gold); }
   .footer-copy { font-size: 10px; color: var(--text-dim); text-align: right; }
 
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(18px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
 
-  @media (max-width: 1024px) {
-    .commodities-grid { grid-template-columns: 1fr 1fr; }
-    .fertilizer-grid { grid-template-columns: 1fr 1fr; }
-  }
-
+  @media (max-width: 1024px) { .commodities-grid { grid-template-columns: 1fr 1fr; } .fertilizer-grid { grid-template-columns: 1fr 1fr; } }
   @media (max-width: 900px) {
-    nav { padding: 16px 24px; }
-    .nav-links { display: none; }
-    .nav-toggle { display: block; }
-    .hero { padding: 88px 24px 48px; }
-    .section { padding: 44px 24px; }
-    .how-grid { grid-template-columns: 1fr; }
-    .commodities-grid { grid-template-columns: 1fr 1fr; }
-    .fertilizer-intro { grid-template-columns: 1fr; gap: 24px; }
-    .fertilizer-grid { grid-template-columns: 1fr; }
-    .fertilizer-section { padding: 32px 24px; }
-    .inquiry-wrap { padding: 40px 24px; }
+    nav { padding: 16px 24px; } .nav-links { display: none; } .nav-toggle { display: block; }
+    .hero { padding: 88px 24px 48px; } .section { padding: 44px 24px; }
+    .how-grid { grid-template-columns: 1fr; } .commodities-grid { grid-template-columns: 1fr 1fr; }
+    .fertilizer-intro { grid-template-columns: 1fr; gap: 24px; } .fertilizer-grid { grid-template-columns: 1fr; }
+    .fertilizer-section { padding: 32px 24px; } .inquiry-wrap { padding: 40px 24px; }
     .inquiry-grid { grid-template-columns: 1fr; gap: 40px; }
-    footer { grid-template-columns: 1fr; gap: 16px; padding: 24px; }
-    .footer-copy { text-align: left; }
+    footer { grid-template-columns: 1fr; gap: 16px; padding: 24px; } .footer-copy { text-align: left; }
   }
-
-  @media (max-width: 600px) {
-    .commodities-grid { grid-template-columns: 1fr; }
-    .fertilizer-grid { grid-template-columns: 1fr; }
-  }
+  @media (max-width: 600px) { .commodities-grid { grid-template-columns: 1fr; } .fertilizer-grid { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
@@ -603,32 +134,28 @@
   <ul class="nav-links">
     <li><a href="trading.html" class="active">Trading</a></li>
     <li><a href="consultancy.html">Consultancy</a></li>
-    <li><a href="physical-commodity-trading-system.html">PCTS™</a></li>
+    <li><a href="physical-commodity-trading-system.html">PCTS&#8482;</a></li>
     <li><a href="playbooks.html">Playbooks</a></li>
     <li><a href="about.html">About</a></li>
     <li><a href="contact.html">Contact</a></li>
     <li><a href="physical-commodity-trading-system.html" class="nav-cta">Enrol Now</a></li>
   </ul>
-  <button class="nav-toggle" id="nav-toggle">☰</button>
+  <button class="nav-toggle" id="nav-toggle">&#9776;</button>
 </nav>
 
 <div class="mobile-menu" id="mobile-menu">
   <a href="trading.html">Trading</a>
   <a href="consultancy.html">Consultancy</a>
-  <a href="physical-commodity-trading-system.html">PCTS™</a>
+  <a href="physical-commodity-trading-system.html">PCTS&#8482;</a>
   <a href="playbooks.html">Playbooks</a>
   <a href="about.html">About</a>
   <a href="contact.html">Contact</a>
   <a href="physical-commodity-trading-system.html">Enrol Now</a>
 </div>
 
-<!-- Hero -->
 <div class="hero">
   <div class="hero-tag">Active Trading — Stone Peak Trading</div>
-  <h1 class="hero-headline">
-    We don't broker deals.
-    <em>We execute them.</em>
-  </h1>
+  <h1 class="hero-headline">We don't broker deals.<em>We execute them.</em></h1>
   <p class="hero-sub">Stone Peak Trading is an active physical commodity trading company operating across Southern and East African markets. We source, structure and execute trades on our own account — connecting serious buyers and sellers across grains, pulses, oilseeds, sugar and fertilizer.</p>
   <div class="hero-cta">
     <a href="#inquiry" class="btn btn-primary">Submit a Trading Inquiry</a>
@@ -636,19 +163,18 @@
   </div>
 </div>
 
-<!-- How we trade -->
 <section class="section">
   <div class="section-label">How we trade</div>
   <div class="how-grid">
     <div class="how-item">
       <div class="how-num">01</div>
       <div class="how-title">We trade on our own account</div>
-      <div class="how-body">Stone Peak Trading takes principal positions. We buy and sell physical commodities using our own capital and network — we are not a brokerage and we do not earn commissions on deals we don't own.</div>
+      <div class="how-body">Stone Peak Trading takes principal positions. We buy and sell physical commodities using our own capital and network — we are not a brokerage and we do not earn commissions on deals we do not own.</div>
     </div>
     <div class="how-item">
       <div class="how-num">02</div>
       <div class="how-title">We move product across the region</div>
-      <div class="how-body">Our operations span Southern and East Africa. We understand the logistics, the documentation, the financing and the counterparty relationships required to move physical commodity volumes reliably across borders.</div>
+      <div class="how-body">Our operations span Southern and East Africa. We understand the logistics, the documentation, the financing and the relationships required to move physical commodity volumes reliably across borders.</div>
     </div>
     <div class="how-item">
       <div class="how-num">03</div>
@@ -658,130 +184,80 @@
   </div>
 </section>
 
-<!-- Commodities -->
 <section class="section">
   <div class="section-label">What we trade</div>
   <div class="commodities-grid">
     <div class="commodity-category">
       <div class="commodity-category-title">Grains</div>
       <ul class="commodity-list">
-        <li>Maize</li>
-        <li>Wheat</li>
-        <li>Rice</li>
-        <li>Barley</li>
-        <li>Sorghum</li>
-        <li>Millet</li>
+        <li>Maize</li><li>Wheat</li><li>Rice</li><li>Barley</li><li>Sorghum</li><li>Millet</li>
       </ul>
     </div>
     <div class="commodity-category">
-      <div class="commodity-category-title">Pulses & Legumes</div>
+      <div class="commodity-category-title">Pulses &amp; Legumes</div>
       <ul class="commodity-list">
-        <li>Sugar Beans</li>
-        <li>Cow Peas</li>
-        <li>Cannellini Beans</li>
-        <li>Kidney Beans</li>
-        <li>Black Eyed Peas</li>
-        <li>Adzuki Beans</li>
-        <li>Black Beans</li>
-        <li>Green Peas</li>
-        <li>Mung Beans</li>
-        <li>Lentils</li>
+        <li>Sugar Beans</li><li>Cow Peas</li><li>Cannellini Beans</li><li>Kidney Beans</li>
+        <li>Black Eyed Peas</li><li>Adzuki Beans</li><li>Black Beans</li><li>Green Peas</li>
+        <li>Mung Beans</li><li>Lentils</li>
       </ul>
     </div>
     <div class="commodity-category">
       <div class="commodity-category-title">Oilseeds</div>
       <ul class="commodity-list">
-        <li>Soybeans</li>
-        <li>Groundnuts / Peanuts</li>
-        <li>Sunflower Seed</li>
-        <li>Pumpkin Seed</li>
-        <li>Cashew Nuts</li>
+        <li>Soybeans</li><li>Groundnuts / Peanuts</li><li>Sunflower Seed</li>
+        <li>Pumpkin Seed</li><li>Cashew Nuts</li>
       </ul>
     </div>
     <div class="commodity-category">
       <div class="commodity-category-title">Sugar</div>
       <ul class="commodity-list">
-        <li>Raw Cane Sugar</li>
-        <li>Refined White Sugar</li>
-        <li>ICUMSA 45</li>
-        <li>ICUMSA 150</li>
+        <li>Raw Cane Sugar</li><li>Refined White Sugar</li><li>ICUMSA 45</li><li>ICUMSA 150</li>
       </ul>
     </div>
   </div>
 </section>
 
-<!-- Fertilizer -->
 <section class="section">
   <div class="section-label">Fertilizer</div>
   <div class="fertilizer-section">
     <div class="fertilizer-intro">
-      <div class="fertilizer-title">Compound, blended<br>and <em>straight fertilizers.</em></div>
+      <div class="fertilizer-title">Compound, blended and <em>straight fertilizers.</em></div>
       <div class="fertilizer-body">We supply fertilizer across Southern and East Africa in loose shipments, 1,000kg bags and 50kg bags. Our range covers compound and blended NPK formulations, nitrogen-based, phosphate-based, potassium-based and specialty micronutrient products. Standard and custom blends available for specific soil types and crop requirements.</div>
     </div>
     <div class="fertilizer-grid">
       <div class="fertilizer-group">
-        <div class="fertilizer-group-title">Compound & Blended NPK</div>
-        <ul>
-          <li>NPK 10-20-10</li>
-          <li>NPK 12-24-12</li>
-          <li>NPK 15-15-15</li>
-          <li>NPK 23-21-0+4S</li>
-          <li>Custom blends available</li>
-        </ul>
+        <div class="fertilizer-group-title">Compound &amp; Blended NPK</div>
+        <ul><li>NPK 10-20-10</li><li>NPK 12-24-12</li><li>NPK 15-15-15</li><li>NPK 23-21-0+4S</li><li>Custom blends available</li></ul>
       </div>
       <div class="fertilizer-group">
         <div class="fertilizer-group-title">Nitrogen-Based (N)</div>
-        <ul>
-          <li>Urea (46% N)</li>
-          <li>Ammonium Nitrate (33–34% N)</li>
-          <li>CAN (27% N)</li>
-          <li>Ammonium Sulphate (21% N)</li>
-          <li>Anhydrous Ammonia (82% N)</li>
-        </ul>
+        <ul><li>Urea (46% N)</li><li>Ammonium Nitrate (33-34% N)</li><li>CAN (27% N)</li><li>Ammonium Sulphate (21% N)</li><li>Anhydrous Ammonia (82% N)</li></ul>
       </div>
       <div class="fertilizer-group">
         <div class="fertilizer-group-title">Phosphate-Based (P)</div>
-        <ul>
-          <li>SSP (16–20% P₂O₅)</li>
-          <li>TSP (44–46% P₂O₅)</li>
-          <li>MAP (11-52-0)</li>
-          <li>DAP (18-46-0)</li>
-        </ul>
+        <ul><li>SSP (16-20% P2O5)</li><li>TSP (44-46% P2O5)</li><li>MAP (11-52-0)</li><li>DAP (18-46-0)</li></ul>
       </div>
       <div class="fertilizer-group">
         <div class="fertilizer-group-title">Potassium-Based (K)</div>
-        <ul>
-          <li>MOP (60% K₂O)</li>
-          <li>SOP (50% K₂O)</li>
-        </ul>
+        <ul><li>MOP (60% K2O)</li><li>SOP (50% K2O)</li></ul>
       </div>
       <div class="fertilizer-group">
-        <div class="fertilizer-group-title">Specialty & Micronutrients</div>
-        <ul>
-          <li>Lime (Calcium Carbonate)</li>
-          <li>Gypsum (Calcium Sulphate)</li>
-          <li>Micronutrient Blends</li>
-          <li>Foliar & Liquid Fertilizers</li>
-        </ul>
+        <div class="fertilizer-group-title">Specialty &amp; Micronutrients</div>
+        <ul><li>Lime (Calcium Carbonate)</li><li>Gypsum (Calcium Sulphate)</li><li>Micronutrient Blends</li><li>Foliar &amp; Liquid Fertilizers</li></ul>
       </div>
       <div class="fertilizer-group">
         <div class="fertilizer-group-title">Pack Sizes</div>
-        <ul>
-          <li>Loose shipments</li>
-          <li>1,000kg bags</li>
-          <li>50kg bags</li>
-        </ul>
+        <ul><li>Loose shipments</li><li>1,000kg bags</li><li>50kg bags</li></ul>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Inquiry -->
 <section class="section" id="inquiry">
   <div class="inquiry-wrap">
     <div class="inquiry-grid">
-      <div class="inquiry-left">
-        <div class="inquiry-title">Have product to move<br>or need <em>reliable supply?</em></div>
+      <div>
+        <div class="inquiry-title">Have product to move or need <em>reliable supply?</em></div>
         <p class="inquiry-body">Submit your inquiry below or reach us directly. We respond to all serious trading inquiries on trading days. For urgent matters use WhatsApp.</p>
         <div class="inquiry-contacts">
           <div class="inquiry-contact-row">
@@ -800,22 +276,10 @@
       </div>
       <div>
         <div id="trade-form-wrap">
-          <div class="form-field">
-            <label class="form-label">Full Name</label>
-            <input type="text" id="tf-name" class="form-input" placeholder="Your full name">
-          </div>
-          <div class="form-field">
-            <label class="form-label">Company</label>
-            <input type="text" id="tf-company" class="form-input" placeholder="Your company name">
-          </div>
-          <div class="form-field">
-            <label class="form-label">Email Address</label>
-            <input type="email" id="tf-email" class="form-input" placeholder="Your email address">
-          </div>
-          <div class="form-field">
-            <label class="form-label">Phone / WhatsApp</label>
-            <input type="tel" id="tf-phone" class="form-input" placeholder="+260 973 000 000">
-          </div>
+          <div class="form-field"><label class="form-label">Full Name</label><input type="text" id="tf-name" class="form-input" placeholder="Your full name"></div>
+          <div class="form-field"><label class="form-label">Company</label><input type="text" id="tf-company" class="form-input" placeholder="Your company name"></div>
+          <div class="form-field"><label class="form-label">Email Address</label><input type="email" id="tf-email" class="form-input" placeholder="Your email address"></div>
+          <div class="form-field"><label class="form-label">Phone / WhatsApp</label><input type="tel" id="tf-phone" class="form-input" placeholder="+260 973 000 000"></div>
           <div class="form-field">
             <label class="form-label">Inquiry Type</label>
             <select id="tf-type" class="form-select">
@@ -827,18 +291,12 @@
               <option>Other</option>
             </select>
           </div>
-          <div class="form-field">
-            <label class="form-label">Commodity and Volume</label>
-            <input type="text" id="tf-commodity" class="form-input" placeholder="e.g. Maize — 500MT">
-          </div>
-          <div class="form-field">
-            <label class="form-label">Additional Details</label>
-            <textarea id="tf-message" class="form-textarea" placeholder="Origin, destination, timing, specifications or any other relevant details"></textarea>
-          </div>
+          <div class="form-field"><label class="form-label">Commodity and Volume</label><input type="text" id="tf-commodity" class="form-input" placeholder="e.g. Maize — 500MT"></div>
+          <div class="form-field"><label class="form-label">Additional Details</label><textarea id="tf-message" class="form-textarea" placeholder="Origin, destination, timing, specifications or any other relevant details"></textarea></div>
           <button class="form-submit" id="tf-submit">Submit Trading Inquiry</button>
         </div>
         <div class="form-success" id="trade-success">
-          <div class="form-success-icon">✦</div>
+          <div class="form-success-icon">&#10022;</div>
           <div class="form-success-title">Inquiry received.</div>
           <p class="form-success-sub">We will review your inquiry and respond within 24 hours on trading days.<br>For urgent matters, WhatsApp +260 973 789 333.</p>
         </div>
@@ -852,7 +310,7 @@
   <ul class="footer-nav">
     <li><a href="trading.html">Trading</a></li>
     <li><a href="consultancy.html">Consultancy</a></li>
-    <li><a href="physical-commodity-trading-system.html">PCTS™</a></li>
+    <li><a href="physical-commodity-trading-system.html">PCTS&#8482;</a></li>
     <li><a href="playbooks.html">Playbooks</a></li>
     <li><a href="about.html">About</a></li>
     <li><a href="contact.html">Contact</a></li>
@@ -869,46 +327,31 @@
     var type = document.getElementById('tf-type').value;
     var commodity = document.getElementById('tf-commodity').value.trim();
     var message = document.getElementById('tf-message').value.trim();
-
-    if (!name || !email || !type) {
-      alert('Please fill in your name, email and inquiry type.');
-      return;
-    }
-
+    if (!name || !email || !type) { alert('Please fill in your name, email and inquiry type.'); return; }
     var btn = this;
     btn.textContent = 'Submitting...';
     btn.disabled = true;
-
     fetch('https://formspree.io/f/xojppong', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify({
-        name: name,
-        company: company,
-        email: email,
-        phone: phone,
-        inquiry_type: type,
-        commodity_and_volume: commodity,
-        details: message,
-        _subject: 'Trading Inquiry — Stone Peak Trading',
-        form_type: 'Trading Inquiry'
-      })
+      body: JSON.stringify({ name: name, company: company, email: email, phone: phone, inquiry_type: type, commodity_and_volume: commodity, details: message, _subject: 'Trading Inquiry — Stone Peak Trading', form_type: 'Trading Inquiry' })
     }).then(function(res) {
-      if (res.ok) {
-        document.getElementById('trade-form-wrap').style.display = 'none';
-        document.getElementById('trade-success').style.display = 'block';
-      } else {
-        alert('Something went wrong. Please email trade@stonepeaktrading.com directly.');
-        btn.textContent = 'Submit Trading Inquiry';
-        btn.disabled = false;
-      }
-    }).catch(function() {
-      alert('Something went wrong. Please email trade@stonepeaktrading.com directly.');
-      btn.textContent = 'Submit Trading Inquiry';
-      btn.disabled = false;
-    });
+      if (res.ok) { document.getElementById('trade-form-wrap').style.display = 'none'; document.getElementById('trade-success').style.display = 'block'; }
+      else { alert('Something went wrong. Please email trade@stonepeaktrading.com directly.'); btn.textContent = 'Submit Trading Inquiry'; btn.disabled = false; }
+    }).catch(function() { alert('Something went wrong. Please email trade@stonepeaktrading.com directly.'); btn.textContent = 'Submit Trading Inquiry'; btn.disabled = false; });
   });
 
-  document.getElementById('nav-toggle').addEventListener('click', function(
+  document.getElementById('nav-toggle').addEventListener('click', function() {
+    document.getElementById('mobile-menu').classList.toggle('active');
+  });
+  document.addEventListener('click', function(e) {
+    var menu = document.getElementById('mobile-menu');
+    var toggle = document.getElementById('nav-toggle');
+    if (menu && toggle && !menu.contains(e.target) && !toggle.contains(e.target)) {
+      menu.classList.remove('active');
+    }
+  });
+</script>
+
 </body>
 </html>
